@@ -1,11 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/frag_container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".LoctionFragment">
+    tools:context=".DocumentFragment">
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/doc_recycler"
+        android:id="@+id/loc_recycler"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
+
 </FrameLayout>

@@ -10,6 +10,7 @@ import androidx.viewpager2.adapter.FragmentStateAdapter;
 import org.jetbrains.annotations.NotNull;
 
 public class DetailPagerAdapter extends FragmentStateAdapter {
+
     public DetailPagerAdapter(@NonNull @NotNull FragmentActivity fragmentActivity) {
         super(fragmentActivity);
     }
@@ -17,21 +18,21 @@ public class DetailPagerAdapter extends FragmentStateAdapter {
     @NotNull
     @Override
     public Fragment createFragment(int position) {
-        switch (position){
-            case 0:{
-                return new DocumentFragment();
+        switch (position) {
+            case 0: {
+                return new LoctionFragment();
             }
-            case 1:{
+            case 1: {
                 return new ImageFragment();
             }
-            case 2:{
+            case 2: {
                 return new AudioFragment();
             }
-            case 3:{
+            case 3: {
                 return new VideoFragment();
             }
             default:
-                return new LoctionFragment();
+                return new DocumentFragment();
         }
     }
 
@@ -39,4 +40,5 @@ public class DetailPagerAdapter extends FragmentStateAdapter {
     public int getItemCount() {
         return 5;
     }
+
 }

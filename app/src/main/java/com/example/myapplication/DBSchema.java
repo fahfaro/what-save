@@ -12,10 +12,7 @@ public class DBSchema {
     public static final String COLUMN_ID = "id";
     public static final String COLUMN_TITLE = "title";
 
-    public static final String SQL_CREATE_LOCATION = "CREATE TABLE " +
-            LOCATION_TABLE_NAME + "(" +
-            COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
-            COLUMN_TITLE + " TEXT);";
+    public static final String SQL_CREATE_LOCATION = "CREATE TABLE " + LOCATION_TABLE_NAME + "(" + COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," + COLUMN_TITLE + " TEXT);";
 
     public static final String SQL_DELETE = " DROP TABLE IF EXISTS " + LOCATION_TABLE_NAME;
     public static final String SQL_DELETE_SELECTED = "delete from " + LOCATION_TABLE_NAME + " where " + COLUMN_ID + " = ";

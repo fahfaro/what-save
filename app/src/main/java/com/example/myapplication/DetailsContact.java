@@ -36,7 +36,7 @@ public class DetailsContact extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_details_contact);
-
+        db = new DBHelper(this);
 
         btn = findViewById(R.id.btn);
         btn.setOnClickListener(this::insert);

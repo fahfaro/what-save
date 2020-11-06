@@ -20,9 +20,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class LoctionFragment extends Fragment {
-    private String message;
     private RecyclerView recyclerView;
     private LocationFragmentAdapter locationFragmentAdapter;
+    private DBHelper dbHelper;
 
     public LoctionFragment() {
     }
@@ -37,15 +37,12 @@ public class LoctionFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull @NotNull View view, @Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-//        TextView textView = view.findViewById(R.id.tv_location_name);
-//        textView.setText("message");
         recyclerView = view.findViewById(R.id.loc_recycler);
-        locationFragmentAdapter = new LocationFragmentAdapter(view.getContext());
+        dbHelper = new DBHelper(view.getContext());
+        List<LocationModel> locationModels = dbHelper.getDataSql();
+        locationFragmentAdapter = new LocationFragmentAdapter(view.getContext(), locationModels);
         recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
         recyclerView.setAdapter(locationFragmentAdapter);
     }
 
-    public void setData(String message) {
-        this.message = message;
-    }
 }

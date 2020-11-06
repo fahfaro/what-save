@@ -11,13 +11,17 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.util.List;
+
 public class DocumentFragment extends Fragment {
     private RecyclerView recyclerView;
     private DocumentFragmentAdapter documentFragmentAdapter;
+    private DBHelper dbHelper;
 
     public DocumentFragment() {
     }
@@ -33,8 +37,11 @@ public class DocumentFragment extends Fragment {
     public void onViewCreated(@NonNull @NotNull View view, @Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         recyclerView = view.findViewById(R.id.doc_recycler);
-        documentFragmentAdapter = new DocumentFragmentAdapter(view.getContext());
+        dbHelper = new DBHelper(view.getContext());
+        List<DocumentModel> documentModels = dbHelper.getDocumentDataSql();
+        documentFragmentAdapter = new DocumentFragmentAdapter(view.getContext(), documentModels);
         recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
         recyclerView.setAdapter(documentFragmentAdapter);
+        documentFragmentAdapter.updateAdaterInsert(documentModels);
     }
 }

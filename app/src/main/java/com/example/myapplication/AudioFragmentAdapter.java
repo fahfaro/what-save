@@ -11,13 +11,16 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.util.List;
+
 public class AudioFragmentAdapter extends RecyclerView.Adapter<AudioFragmentAdapter.MyViewHolder> {
     private Context context;
+    private List<AudioModel> audioModels;
 
-    public AudioFragmentAdapter(Context context) {
+    public AudioFragmentAdapter(Context context, List<AudioModel> audioModels) {
         this.context = context;
+        this.audioModels = audioModels;
     }
-
     @NonNull
     @NotNull
     @Override
@@ -28,12 +31,17 @@ public class AudioFragmentAdapter extends RecyclerView.Adapter<AudioFragmentAdap
 
     @Override
     public void onBindViewHolder(@NonNull @NotNull AudioFragmentAdapter.MyViewHolder holder, int position) {
-        holder.t_name.setText("Audio Fragment");
+        String name = audioModels.get(1).getName();
+        if (name != null) {
+            holder.t_name.setText(name);
+        }else {
+            holder.t_name.setText("Empty");
+        }
     }
 
     @Override
     public int getItemCount() {
-        return 15;
+        return audioModels.size();
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder {

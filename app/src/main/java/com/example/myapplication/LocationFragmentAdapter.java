@@ -11,13 +11,20 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.util.List;
+
 public class LocationFragmentAdapter extends RecyclerView.Adapter<LocationFragmentAdapter.MyViewHolder> {
     private Context context;
+    private List<LocationModel> location_models;
 
-    public LocationFragmentAdapter(Context context) {
+    public LocationFragmentAdapter(Context context, List<LocationModel> location_models) {
         this.context = context;
+        this.location_models = location_models;
     }
-
+    public void updateAdaterInsert(List<LocationModel> locationModelList) {
+        this.location_models = locationModelList;
+        notifyItemInserted(locationModelList.size());
+    }
     @NonNull
     @NotNull
     @Override
@@ -28,12 +35,17 @@ public class LocationFragmentAdapter extends RecyclerView.Adapter<LocationFragme
 
     @Override
     public void onBindViewHolder(@NonNull @NotNull LocationFragmentAdapter.MyViewHolder holder, int position) {
-        holder.t_name.setText("Location Fragment");
+        String name = location_models.get(1).getName();
+        if (name != null) {
+            holder.t_name.setText(name);
+        }else {
+            holder.t_name.setText("Empty");
+        }
     }
 
     @Override
     public int getItemCount() {
-        return 12;
+        return location_models.size();
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder {

@@ -11,11 +11,19 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.util.List;
+
 public class DocumentFragmentAdapter extends RecyclerView.Adapter<DocumentFragmentAdapter.MyViewHolder> {
     private Context context;
+    private List<DocumentModel> documentModels;
 
-    public DocumentFragmentAdapter(Context context) {
+    public DocumentFragmentAdapter(Context context, List<DocumentModel> documentModels) {
         this.context = context;
+        this.documentModels = documentModels;
+    }
+    public void updateAdaterInsert(List<DocumentModel> documentModelList) {
+        this.documentModels = documentModelList;
+        notifyItemInserted(documentModelList.size());
     }
 
     @NonNull
@@ -28,12 +36,17 @@ public class DocumentFragmentAdapter extends RecyclerView.Adapter<DocumentFragme
 
     @Override
     public void onBindViewHolder(@NonNull @NotNull DocumentFragmentAdapter.MyViewHolder holder, int position) {
-        holder.t_name.setText("Document Fragment");
+        String name = documentModels.get(1).getName();
+        if (name != null) {
+            holder.t_name.setText(name);
+        }else {
+            holder.t_name.setText("Empty");
+        }
     }
 
     @Override
     public int getItemCount() {
-        return 15;
+        return documentModels.size();
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder {

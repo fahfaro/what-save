@@ -12,13 +12,20 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.util.List;
+
 public class VideoFragmentAdapter extends RecyclerView.Adapter<VideoFragmentAdapter.MyViewHolder> {
     private Context context;
+    private List<VideoModel> videoModels;
 
-    public VideoFragmentAdapter(Context context) {
+    public VideoFragmentAdapter(Context context, List<VideoModel> videoModels) {
         this.context = context;
+        this.videoModels = videoModels;
     }
-
+    public void updateAdaterInsert(List<VideoModel> videoModelList) {
+        this.videoModels = videoModelList;
+        notifyItemInserted(videoModelList.size());
+    }
     @NonNull
     @NotNull
     @Override
@@ -29,12 +36,17 @@ public class VideoFragmentAdapter extends RecyclerView.Adapter<VideoFragmentAdap
 
     @Override
     public void onBindViewHolder(@NonNull @NotNull VideoFragmentAdapter.MyViewHolder holder, int position) {
-        holder.t_name.setText("Video Fragment");
+        String name = videoModels.get(1).getName();
+        if (name != null) {
+            holder.t_name.setText(name);
+        }else {
+            holder.t_name.setText("Empty");
+        }
     }
 
     @Override
     public int getItemCount() {
-        return 15;
+        return videoModels.size();
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder {

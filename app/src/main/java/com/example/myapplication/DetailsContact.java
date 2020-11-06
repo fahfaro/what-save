@@ -103,7 +103,7 @@ public class DetailsContact extends AppCompatActivity {
     private void insert(View view) {
 //        editText = findViewById(R.id.ed_text);
 //        messag = editText.getText().toString();
-        db.insertData(messag);
+        db.insertLocatioData(messag);
     }
 
     private void handlePdfFile(Intent intent) {

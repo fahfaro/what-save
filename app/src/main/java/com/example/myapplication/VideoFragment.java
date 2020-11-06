@@ -14,9 +14,12 @@ import android.view.ViewGroup;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.util.List;
+
 public class VideoFragment extends Fragment {
     private RecyclerView recyclerView;
     private VideoFragmentAdapter videoFragmentAdapter;
+    private DBHelper dbHelper;
 
     public VideoFragment() {
         // Required empty public constructor
@@ -33,8 +36,11 @@ public class VideoFragment extends Fragment {
     public void onViewCreated(@NonNull @NotNull View view, @Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         recyclerView = view.findViewById(R.id.vid_recycler);
-        videoFragmentAdapter = new VideoFragmentAdapter(view.getContext());
+        dbHelper = new DBHelper(view.getContext());
+        List<VideoModel> videoModels = dbHelper.getVideoDataSql();
+        videoFragmentAdapter = new VideoFragmentAdapter(view.getContext(),videoModels);
         recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
         recyclerView.setAdapter(videoFragmentAdapter);
+        videoFragmentAdapter.updateAdaterInsert(videoModels);
     }
 }

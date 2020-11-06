@@ -14,9 +14,13 @@ import android.view.ViewGroup;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.util.List;
+
 public class AudioFragment extends Fragment {
-private RecyclerView recyclerView;
-private AudioFragmentAdapter audioFragmentAdapter;
+    private RecyclerView recyclerView;
+    private AudioFragmentAdapter audioFragmentAdapter;
+    private DBHelper dbHelper;
+
     public AudioFragment() {
         // Required empty public constructor
     }
@@ -32,7 +36,9 @@ private AudioFragmentAdapter audioFragmentAdapter;
     public void onViewCreated(@NonNull @NotNull View view, @Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         recyclerView = view.findViewById(R.id.audio_recycler);
-        audioFragmentAdapter = new AudioFragmentAdapter(view.getContext());
+        dbHelper = new DBHelper(view.getContext());
+        List<AudioModel> audioModels = dbHelper.getAudioDataSql();
+        audioFragmentAdapter = new AudioFragmentAdapter(view.getContext(), audioModels);
         recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
         recyclerView.setAdapter(audioFragmentAdapter);
     }

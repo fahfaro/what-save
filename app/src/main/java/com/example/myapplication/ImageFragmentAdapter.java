@@ -11,11 +11,15 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.util.List;
+
 public class ImageFragmentAdapter extends RecyclerView.Adapter<ImageFragmentAdapter.MyViewHolder> {
     private Context context;
+    private List<ImageModel> imageModels;
 
-    public ImageFragmentAdapter(Context context) {
+    public ImageFragmentAdapter(Context context, List<ImageModel> image_Models) {
         this.context = context;
+        this.imageModels = image_Models;
     }
 
     @NonNull
@@ -28,12 +32,17 @@ public class ImageFragmentAdapter extends RecyclerView.Adapter<ImageFragmentAdap
 
     @Override
     public void onBindViewHolder(@NonNull @NotNull ImageFragmentAdapter.MyViewHolder holder, int position) {
-        holder.t_name.setText("Image Fragment");
+        String name = imageModels.get(1).getName();
+        if (name != null) {
+            holder.t_name.setText(name);
+        }else {
+            holder.t_name.setText("Empty");
+        }
     }
 
     @Override
     public int getItemCount() {
-        return 15;
+        return imageModels.size();
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder {

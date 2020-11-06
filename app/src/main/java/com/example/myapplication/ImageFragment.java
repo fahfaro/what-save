@@ -14,8 +14,11 @@ import android.view.ViewGroup;
 
 import org.jetbrains.annotations.NotNull;
 
-public class ImageFragment extends Fragment {
+import java.util.List;
 
+
+public class ImageFragment extends Fragment {
+    private DBHelper dbHelper ;
     private RecyclerView recyclerView;
     private ImageFragmentAdapter imageFragmentAdapter;
 
@@ -33,7 +36,9 @@ public class ImageFragment extends Fragment {
     public void onViewCreated(@NonNull @NotNull View view, @Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         recyclerView = view.findViewById(R.id.img_recycler);
-        imageFragmentAdapter = new ImageFragmentAdapter(view.getContext());
+        dbHelper = new DBHelper(view.getContext());
+        List<ImageModel> imageModels = dbHelper.getImageDataSql();
+        imageFragmentAdapter = new ImageFragmentAdapter(view.getContext(), imageModels);
         recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
         recyclerView.setAdapter(imageFragmentAdapter);
     }

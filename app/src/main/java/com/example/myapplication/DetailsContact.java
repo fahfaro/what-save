@@ -38,8 +38,8 @@ public class DetailsContact extends AppCompatActivity {
         setContentView(R.layout.activity_details_contact);
         db = new DBHelper(this);
 
-        btn = findViewById(R.id.btn);
-        btn.setOnClickListener(this::insert);
+//        btn = findViewById(R.id.btn);
+//        btn.setOnClickListener(this::insert);
         Intent intent = getIntent();
         if (intent != null) {
             String action = intent.getAction();
@@ -101,8 +101,8 @@ public class DetailsContact extends AppCompatActivity {
     }
 
     private void insert(View view) {
-        editText = findViewById(R.id.ed_text);
-        messag = editText.getText().toString();
+//        editText = findViewById(R.id.ed_text);
+//        messag = editText.getText().toString();
         db.insertData(messag);
     }
 

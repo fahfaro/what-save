@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -90,7 +91,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void search() {
-        this.onResume();
+        Intent intent = new Intent(this,DetailsContact.class);
+        startActivity(intent);
     }
 
 }

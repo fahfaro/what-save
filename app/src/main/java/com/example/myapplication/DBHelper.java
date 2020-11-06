@@ -12,6 +12,7 @@ import static com.example.myapplication.DBSchema.DATABASE_VERSION;
 import static com.example.myapplication.DBSchema.LOCATION_TABLE_NAME;
 
 public class DBHelper extends SQLiteOpenHelper {
+    private SQLiteDatabase db;
 
     public DBHelper(@Nullable Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -26,11 +27,12 @@ public class DBHelper extends SQLiteOpenHelper {
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 
     }
+
     public void insertData(String title) {
-        SQLiteDatabase db = getWritableDatabase();
+        db = getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(DBSchema.COLUMN_TITLE, title);
         db.insert(LOCATION_TABLE_NAME, null, values);
-
+        db.close();
     }
 }

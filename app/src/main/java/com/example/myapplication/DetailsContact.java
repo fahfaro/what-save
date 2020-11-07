@@ -5,6 +5,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager2.widget.ViewPager2;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -20,6 +22,13 @@ import com.google.android.material.tabs.TabLayoutMediator;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,12 +41,15 @@ public class DetailsContact extends AppCompatActivity {
     DBHelper db;
     Button btn;
     String messag;
+    private static final String DIR_NAME_IMAGE = "Images";
+    private static final String IMAGE_NAME = "Test_Image.jpg";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_details_contact);
         db = new DBHelper(this);
-
+        mImageView = findViewById(R.id.myImageView);
 //        btn = findViewById(R.id.btn);
 //        btn.setOnClickListener(this::insert);
         Intent intent = getIntent();
@@ -114,12 +126,34 @@ public class DetailsContact extends AppCompatActivity {
     }
 
     private void handleImage(Intent intent) {
-        Uri image = intent.getParcelableExtra(Intent.EXTRA_STREAM);
-        if (image != null) {
-//            mImageView = findViewById(R.id.myImageView);
-//            mImageView.setVisibility(View.VISIBLE);
-//            mImageView.setImageURI(image);
-            Log.d("Image File Path : ", "" + image.getPath());
+        Uri uri = intent.getParcelableExtra(Intent.EXTRA_STREAM);
+        String uriPath = uri.getPath();
+        String  ImageName1 = getName(uriPath);
+        String ImageName = ImageName1 + ".png";
+        if (uri != null) {
+            File path = getDir(DIR_NAME_IMAGE, MODE_PRIVATE);
+            File file = new File(path, ImageName);
+            InputStream is = null;
+            BufferedOutputStream bos = null;
+            try {
+                is = getApplicationContext().getContentResolver().openInputStream(uri);
+                bos = new BufferedOutputStream(new FileOutputStream(file, false));
+                byte[] buf = new byte[1024];
+                is.read(buf);
+                do {
+                    bos.write(buf);
+                } while (is.read(buf) != -1);
+            } catch (IOException e) {
+                e.printStackTrace();
+            } finally {
+                try {
+                    if (is != null) is.close();
+                    if (bos != null) bos.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            Log.d("Image File Path : ", "" + uri.getPath());
         }
     }
 
@@ -143,5 +177,49 @@ public class DetailsContact extends AppCompatActivity {
                 Log.d("Path ", "" + uri.getPath());
             }
         }
+    }
+
+    private void readImage(View view) {
+        Bitmap image = null;
+        File path = getDir(DIR_NAME_IMAGE, MODE_PRIVATE);
+        File file = new File(path, IMAGE_NAME);
+        InputStream inputStream = null;
+        try {
+            inputStream = new FileInputStream(file);
+            image = BitmapFactory.decodeStream(inputStream);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        mImageView.setImageBitmap(image);
+    }
+
+    private void createImageDir(View view) {
+        Bitmap data = getImage();
+        File path = getDir(DIR_NAME_IMAGE, MODE_PRIVATE);
+        File file = new File(path, IMAGE_NAME);
+        try {
+            FileOutputStream outputStream = new FileOutputStream(file);
+            data.compress(Bitmap.CompressFormat.JPEG, 100, outputStream);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private Bitmap getImage() {
+        Bitmap image = null;
+        try {
+            InputStream inputStream = getAssets().open("fulbaackgroun.jpeg");
+            image = BitmapFactory.decodeStream(inputStream);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return image;
+    }
+    public static String getName(String filename) {
+        if (filename == null) {
+            return null;
+        }
+        int index = filename.lastIndexOf('/');
+        return filename.substring(index + 1);
     }
 }

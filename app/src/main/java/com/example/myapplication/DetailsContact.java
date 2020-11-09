@@ -32,6 +32,8 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
+import static android.icu.util.ULocale.getName;
+
 public class DetailsContact extends AppCompatActivity {
     private String textdata;
     EditText editText;
@@ -42,6 +44,8 @@ public class DetailsContact extends AppCompatActivity {
     Button btn;
     String messag;
     private static final String DIR_NAME_IMAGE = "Images";
+    private static final String DIR_NAME_AUDIO = "Audio";
+    private static final String DIR_NAME_VIDEO = "Video";
     private static final String IMAGE_NAME = "Test_Image.jpg";
 
     @Override
@@ -61,6 +65,10 @@ public class DetailsContact extends AppCompatActivity {
                     handleTextData(intent);
                 } else if (type.startsWith("image/")) {
                     handleImage(intent);
+                } else if (type.startsWith("audio/")) {
+                    handleAudio(intent);
+                } else if (type.startsWith("video/")) {
+                    handleVideo(intent);
                 } else if (type.equalsIgnoreCase("application/pdf")) {
                     handlePdfFile(intent);
                 }
@@ -112,27 +120,47 @@ public class DetailsContact extends AppCompatActivity {
         tabLayoutMediator.attach();
     }
 
-    private void insert(View view) {
-//        editText = findViewById(R.id.ed_text);
-//        messag = editText.getText().toString();
-        db.insertLocatioData(messag);
-    }
-
-    private void handlePdfFile(Intent intent) {
-        Uri pdffile = intent.getParcelableExtra(Intent.EXTRA_STREAM);
-        if (pdffile != null) {
-            Log.d("Pdf File Path : ", "" + pdffile.getPath());
+    private void handleVideo(Intent intent) {
+        Uri uri = intent.getParcelableExtra(Intent.EXTRA_STREAM);
+        String uriPath = uri.getPath();
+        String videoName1 = getName(uriPath);
+        String videoName = videoName1 + ".mp4";
+        if (uri != null) {
+            File path = getDir(DIR_NAME_VIDEO, MODE_PRIVATE);
+            File file = new File(path, videoName);
+            InputStream is = null;
+            BufferedOutputStream bos = null;
+            try {
+                is = getApplicationContext().getContentResolver().openInputStream(uri);
+                bos = new BufferedOutputStream(new FileOutputStream(file, false));
+                byte[] buf = new byte[1024];
+                is.read(buf);
+                do {
+                    bos.write(buf);
+                } while (is.read(buf) != -1);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+//             finally {
+//                try {
+//                    if (is != null) is.close();
+//                    if (bos != null) bos.close();
+//                } catch (IOException e) {
+//                    e.printStackTrace();
+//                }
+//            }
+            Log.d("Video File Path : ", "" + uri.getPath());
         }
     }
 
-    private void handleImage(Intent intent) {
+    private void handleAudio(Intent intent) {
         Uri uri = intent.getParcelableExtra(Intent.EXTRA_STREAM);
         String uriPath = uri.getPath();
-        String  ImageName1 = getName(uriPath);
-        String ImageName = ImageName1 + ".png";
+        String audioName1 = getName(uriPath);
+        String audioName = audioName1 + ".mp3";
         if (uri != null) {
-            File path = getDir(DIR_NAME_IMAGE, MODE_PRIVATE);
-            File file = new File(path, ImageName);
+            File path = getDir(DIR_NAME_AUDIO, MODE_PRIVATE);
+            File file = new File(path, audioName);
             InputStream is = null;
             BufferedOutputStream bos = null;
             try {
@@ -153,6 +181,55 @@ public class DetailsContact extends AppCompatActivity {
                     e.printStackTrace();
                 }
             }
+            Log.d("Audio File Path : ", "" + uri.getPath());
+        }
+    }
+
+    private void insert(View view) {
+//        editText = findViewById(R.id.ed_text);
+//        messag = editText.getText().toString();
+        db.insertLocatioData(messag);
+    }
+
+    private void handlePdfFile(Intent intent) {
+        Uri pdffile = intent.getParcelableExtra(Intent.EXTRA_STREAM);
+        if (pdffile != null) {
+            Log.d("Pdf File Path : ", "" + pdffile.getPath());
+        }
+    }
+
+    private void handleImage(Intent intent) {
+        Uri uri = intent.getParcelableExtra(Intent.EXTRA_STREAM);
+        String uriPath = uri.getPath();
+        String ImageName = null;
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
+
+            ImageName = getName(uriPath);
+        }
+        if (uri != null) {
+            File path = getDir(DIR_NAME_IMAGE, MODE_PRIVATE);
+            File file = new File(path, ImageName);
+            InputStream is = null;
+            BufferedOutputStream bos = null;
+            try {
+                is = getApplicationContext().getContentResolver().openInputStream(uri);
+                bos = new BufferedOutputStream(new FileOutputStream(file, false));
+                byte[] buf = new byte[1024];
+                is.read(buf);
+                do {
+                    bos.write(buf);
+                } while (is.read(buf) != -1);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+//            finally {
+//                try {
+//                    if (is != null) is.close();
+//                    if (bos != null) bos.close();
+//                } catch (IOException e) {
+//                    e.printStackTrace();
+//                }
+//            }
             Log.d("Image File Path : ", "" + uri.getPath());
         }
     }
@@ -193,28 +270,6 @@ public class DetailsContact extends AppCompatActivity {
         mImageView.setImageBitmap(image);
     }
 
-    private void createImageDir(View view) {
-        Bitmap data = getImage();
-        File path = getDir(DIR_NAME_IMAGE, MODE_PRIVATE);
-        File file = new File(path, IMAGE_NAME);
-        try {
-            FileOutputStream outputStream = new FileOutputStream(file);
-            data.compress(Bitmap.CompressFormat.JPEG, 100, outputStream);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    private Bitmap getImage() {
-        Bitmap image = null;
-        try {
-            InputStream inputStream = getAssets().open("fulbaackgroun.jpeg");
-            image = BitmapFactory.decodeStream(inputStream);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return image;
-    }
     public static String getName(String filename) {
         if (filename == null) {
             return null;

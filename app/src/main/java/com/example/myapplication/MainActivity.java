@@ -7,16 +7,25 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 
 public class MainActivity extends AppCompatActivity {
     private FloatingActionButton btnFab;
@@ -24,16 +33,36 @@ public class MainActivity extends AppCompatActivity {
     MainAdapter mainAdapter;
     String messag;
     private DBHelper db;
+    private static final String DIR_NAME_IMAGE = "Images";
+    private static final String IMAGE_NAME = "4747.jpeg";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         db = new DBHelper(this);
-        mainAdapter = new MainAdapter(this);
-        recyclerView = findViewById(R.id.contact_list);
-        recyclerView.setLayoutManager(new LinearLayoutManager(MainActivity.this));
-        recyclerView.setAdapter(mainAdapter);
-
+//        mainAdapter = new MainAdapter(this);
+//        recyclerView = findViewById(R.id.contact_list);
+//        recyclerView.setLayoutManager(new LinearLayoutManager(MainActivity.this));
+//        recyclerView.setAdapter(mainAdapter);
+        ImageView mImageView = findViewById(R.id.myImageViewMain);
+        Bitmap image = null;
+        File path = getDir(DIR_NAME_IMAGE, MODE_PRIVATE);
+        File file = new File(path, IMAGE_NAME );
+        InputStream inputStream = null;
+        if (file.exists()){
+            Toast.makeText(this, "Yes", Toast.LENGTH_SHORT).show();
+        }
+        else {
+            Toast.makeText(this, "No", Toast.LENGTH_SHORT).show();
+        }
+        try {
+            inputStream = new FileInputStream(file);
+            image = BitmapFactory.decodeStream(inputStream);
+            mImageView.setImageBitmap(image);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
         btnFab = findViewById(R.id.fabbtn_new);
         btnFab.setOnClickListener(this::newTask);
 

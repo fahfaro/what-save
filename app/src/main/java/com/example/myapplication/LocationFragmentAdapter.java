@@ -1,6 +1,7 @@
 package com.example.myapplication;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,14 +36,24 @@ public class LocationFragmentAdapter extends RecyclerView.Adapter<LocationFragme
 
     @Override
     public void onBindViewHolder(@NonNull @NotNull LocationFragmentAdapter.MyViewHolder holder, int position) {
-        String name = location_models.get(1).getName();
+        String name = location_models.get(position).getName();
+        String title = location_models.get(position).getName();
         if (name != null) {
             holder.t_name.setText(name);
         }else {
             holder.t_name.setText("Empty");
         }
+        holder.mView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context, ViewItem.class);
+                context.startActivity(intent);
+            }
+        });
     }
-
+    public int getPostion(int position) {
+        return location_models.get(position).getId();
+    }
     @Override
     public int getItemCount() {
         return location_models.size();
@@ -50,10 +61,12 @@ public class LocationFragmentAdapter extends RecyclerView.Adapter<LocationFragme
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
         TextView t_name;
+        View mView;
 
         public MyViewHolder(@NonNull @NotNull View itemView) {
             super(itemView);
             t_name = itemView.findViewById(R.id.tv_location_name);
+            mView = itemView;
         }
     }
 }

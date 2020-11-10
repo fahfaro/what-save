@@ -36,7 +36,7 @@ public class VideoFragmentAdapter extends RecyclerView.Adapter<VideoFragmentAdap
 
     @Override
     public void onBindViewHolder(@NonNull @NotNull VideoFragmentAdapter.MyViewHolder holder, int position) {
-        String name = videoModels.get(1).getName();
+        String name = videoModels.get(position).getName();
         if (name != null) {
             holder.t_name.setText(name);
         }else {

@@ -32,7 +32,7 @@ public class ImageFragmentAdapter extends RecyclerView.Adapter<ImageFragmentAdap
 
     @Override
     public void onBindViewHolder(@NonNull @NotNull ImageFragmentAdapter.MyViewHolder holder, int position) {
-        String name = imageModels.get(1).getName();
+        String name = imageModels.get(position).getName();
         if (name != null) {
             holder.t_name.setText(name);
         }else {

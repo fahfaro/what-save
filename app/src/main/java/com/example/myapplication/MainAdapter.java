@@ -33,7 +33,7 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.MyViewHolder> 
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(context, DetailsContact.class);
+                Intent intent = new Intent(context,DetailsContact.class);
                 context.startActivity(intent);
             }
         });

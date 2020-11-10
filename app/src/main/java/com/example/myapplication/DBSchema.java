@@ -10,16 +10,25 @@ public class DBSchema {
     public static final String VIDEO_TABLE_NAME = "video";
     public static final String DOC_TABLE_NAME = "document";
     public static final String COLUMN_ID = "id";
-    public static final String COLUMN_TITLE = "title";
+    public static final String COLUMN_NAME = "name";
+    public static final String COLUMN_LOCATION_TITLE = "title";
+    public static final String COLUMN_IMAGE_TITLE = "title";
+    public static final String COLUMN_AUDIO_TITLE = "title";
+    public static final String COLUMN_VIDEO_TITLE = "title";
+    public static final String COLUMN_DOCUMENT_TITLE = "title";
 
-    public static final String SQL_CREATE_LOCATION = "CREATE TABLE " + LOCATION_TABLE_NAME + "(" + COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," + COLUMN_TITLE + " TEXT);";
-    public static final String SQL_CREATE_IMAGE = "CREATE TABLE " + IMAGE_TABLE_NAME + "(" + COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," + COLUMN_TITLE + " TEXT);";
-    public static final String SQL_CREATE_AUDIO = "CREATE TABLE " + AUDIO_TABLE_NAME + "(" + COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," + COLUMN_TITLE + " TEXT);";
-    public static final String SQL_CREATE_VIDEO = "CREATE TABLE " + VIDEO_TABLE_NAME + "(" + COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," + COLUMN_TITLE + " TEXT);";
-    public static final String SQL_CREATE_DOCUMENT = "CREATE TABLE " + DOC_TABLE_NAME + "(" + COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," + COLUMN_TITLE + " TEXT);";
+    public static final String SQL_CREATE_LOCATION = "CREATE TABLE " + LOCATION_TABLE_NAME + "(" + COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," + COLUMN_NAME + " TEXT," + COLUMN_LOCATION_TITLE + " TEXT);";
+    public static final String SQL_CREATE_IMAGE = "CREATE TABLE " + IMAGE_TABLE_NAME + "(" + COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," + COLUMN_NAME + " TEXT," + COLUMN_IMAGE_TITLE + " TEXT);";
+    public static final String SQL_CREATE_AUDIO = "CREATE TABLE " + AUDIO_TABLE_NAME + "(" + COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," + COLUMN_NAME + " TEXT," + COLUMN_AUDIO_TITLE + " TEXT);";
+    public static final String SQL_CREATE_VIDEO = "CREATE TABLE " + VIDEO_TABLE_NAME + "(" + COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," + COLUMN_NAME + " TEXT," + COLUMN_VIDEO_TITLE + " TEXT);";
+    public static final String SQL_CREATE_DOCUMENT = "CREATE TABLE " + DOC_TABLE_NAME + "(" + COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," + COLUMN_NAME + " TEXT," + COLUMN_DOCUMENT_TITLE + " TEXT);";
 
     public static final String SQL_DELETE = " DROP TABLE IF EXISTS " + LOCATION_TABLE_NAME;
-    public static final String SQL_DELETE_SELECTED = "delete from " + LOCATION_TABLE_NAME + " where " + COLUMN_ID + " = ";
+    public static final String SQL_DELETE_SELECTED_LOCATION = "delete from " + LOCATION_TABLE_NAME + " where " + COLUMN_ID + " = ";
+    public static final String SQL_DELETE_SELECTED_IMAGE = "delete from " + IMAGE_TABLE_NAME + " where " + COLUMN_ID + " = ";
+    public static final String SQL_DELETE_SELECTED_AUDIO = "delete from " + AUDIO_TABLE_NAME + " where " + COLUMN_ID + " = ";
+    public static final String SQL_DELETE_SELECTED_VIDEO = "delete from " + VIDEO_TABLE_NAME + " where " + COLUMN_ID + " = ";
+    public static final String SQL_DELETE_SELECTED_DOCUMENT = "delete from " + DOC_TABLE_NAME + " where " + COLUMN_ID + " = ";
     public static final String SQL_UPDATE = "SELECT * from " + LOCATION_TABLE_NAME + " where " + COLUMN_ID + " = ";
 
     public static final String SQL_SELECT_ALL_LOCATION = "SELECT * FROM " + LOCATION_TABLE_NAME;

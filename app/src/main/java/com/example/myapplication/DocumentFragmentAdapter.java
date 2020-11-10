@@ -36,7 +36,7 @@ public class DocumentFragmentAdapter extends RecyclerView.Adapter<DocumentFragme
 
     @Override
     public void onBindViewHolder(@NonNull @NotNull DocumentFragmentAdapter.MyViewHolder holder, int position) {
-        String name = documentModels.get(1).getName();
+        String name = documentModels.get(position).getName();
         if (name != null) {
             holder.t_name.setText(name);
         }else {

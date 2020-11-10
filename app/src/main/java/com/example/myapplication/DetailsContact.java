@@ -1,9 +1,11 @@
 package com.example.myapplication;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager2.widget.ViewPager2;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -14,6 +16,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -40,19 +43,19 @@ public class DetailsContact extends AppCompatActivity {
     private TextView mTextView;
     private ImageView mImageView;
     private ViewPager2 viewPager2;
-    DBHelper db;
     Button btn;
-    String messag;
     private static final String DIR_NAME_IMAGE = "Images";
     private static final String DIR_NAME_AUDIO = "Audio";
     private static final String DIR_NAME_VIDEO = "Video";
     private static final String IMAGE_NAME = "Test_Image.jpg";
+    private DBHelper dbHelper;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_details_contact);
-        db = new DBHelper(this);
+        dbHelper = new DBHelper(this);
         mImageView = findViewById(R.id.myImageView);
 //        btn = findViewById(R.id.btn);
 //        btn.setOnClickListener(this::insert);
@@ -121,23 +124,54 @@ public class DetailsContact extends AppCompatActivity {
     }
 
     private void handleVideo(Intent intent) {
+        String videoName = null;
+        String[] name = {null};
         Uri uri = intent.getParcelableExtra(Intent.EXTRA_STREAM);
         String uriPath = uri.getPath();
-        String videoName1 = getName(uriPath);
-        String videoName = videoName1 + ".mp4";
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
+            videoName = getName(uriPath);
+        }
+        String videoname = videoName + ".mp4";
         if (uri != null) {
             File path = getDir(DIR_NAME_VIDEO, MODE_PRIVATE);
-            File file = new File(path, videoName);
+            File file = new File(path, videoname);
             InputStream is = null;
             BufferedOutputStream bos = null;
             try {
                 is = getApplicationContext().getContentResolver().openInputStream(uri);
                 bos = new BufferedOutputStream(new FileOutputStream(file, false));
+                AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
+                alertDialog.setTitle("New Tag");
+                alertDialog.setMessage("Enter Tag");
+
+                final EditText input = new EditText(this);
+                LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
+                        LinearLayout.LayoutParams.MATCH_PARENT,
+                        LinearLayout.LayoutParams.MATCH_PARENT);
+                input.setLayoutParams(lp);
+                alertDialog.setView(input);
+
+                alertDialog.setPositiveButton("YES",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                name[0] = input.getText().toString();
+                                if (name[0].compareTo("") == 0) {
+                                    Toast.makeText(getApplicationContext(),
+                                            "missing", Toast.LENGTH_SHORT).show();
+                                } else {
+                                    dbHelper.insertVideoData(name[0], videoname);
+                                }
+                            }
+
+                        });
+
+                alertDialog.show();
                 byte[] buf = new byte[1024];
                 is.read(buf);
                 do {
                     bos.write(buf);
                 } while (is.read(buf) != -1);
+
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -154,18 +188,50 @@ public class DetailsContact extends AppCompatActivity {
     }
 
     private void handleAudio(Intent intent) {
+        String audioName = null;
+        final String[] name = {null};
         Uri uri = intent.getParcelableExtra(Intent.EXTRA_STREAM);
         String uriPath = uri.getPath();
-        String audioName1 = getName(uriPath);
-        String audioName = audioName1 + ".mp3";
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
+            audioName = getName(uriPath);
+        }
+        String audioname = audioName + ".mp3";
         if (uri != null) {
             File path = getDir(DIR_NAME_AUDIO, MODE_PRIVATE);
-            File file = new File(path, audioName);
+            File file = new File(path, audioname);
             InputStream is = null;
             BufferedOutputStream bos = null;
             try {
                 is = getApplicationContext().getContentResolver().openInputStream(uri);
                 bos = new BufferedOutputStream(new FileOutputStream(file, false));
+                AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
+                alertDialog.setTitle("New Tag");
+                alertDialog.setMessage("Enter Tag");
+
+                final EditText input = new EditText(this);
+                LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
+                        LinearLayout.LayoutParams.MATCH_PARENT,
+                        LinearLayout.LayoutParams.MATCH_PARENT);
+                input.setLayoutParams(lp);
+                alertDialog.setView(input);
+
+                alertDialog.setPositiveButton("YES",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                name[0] = input.getText().toString();
+                                if (name[0].compareTo("") == 0) {
+                                    Toast.makeText(getApplicationContext(),
+                                            "missing", Toast.LENGTH_SHORT).show();
+                                } else {
+                                    Toast.makeText(getApplicationContext(),
+                                            "save", Toast.LENGTH_SHORT).show();
+                                }
+                            }
+
+                        });
+
+                alertDialog.show();
+                dbHelper.insertAudioData(name[0], audioname);
                 byte[] buf = new byte[1024];
                 is.read(buf);
                 do {
@@ -186,9 +252,10 @@ public class DetailsContact extends AppCompatActivity {
     }
 
     private void insert(View view) {
+        String name1 = null, messag2 = null;
 //        editText = findViewById(R.id.ed_text);
 //        messag = editText.getText().toString();
-        db.insertLocatioData(messag);
+        dbHelper.insertLocatioData(name1, messag2);
     }
 
     private void handlePdfFile(Intent intent) {
@@ -199,6 +266,8 @@ public class DetailsContact extends AppCompatActivity {
     }
 
     private void handleImage(Intent intent) {
+        final String[] name = {null};
+        String imagename;
         Uri uri = intent.getParcelableExtra(Intent.EXTRA_STREAM);
         String uriPath = uri.getPath();
         String ImageName = null;
@@ -206,14 +275,43 @@ public class DetailsContact extends AppCompatActivity {
 
             ImageName = getName(uriPath);
         }
+        imagename = ImageName + ".jpeg";
         if (uri != null) {
             File path = getDir(DIR_NAME_IMAGE, MODE_PRIVATE);
-            File file = new File(path, ImageName);
+            File file = new File(path, imagename);
             InputStream is = null;
             BufferedOutputStream bos = null;
             try {
                 is = getApplicationContext().getContentResolver().openInputStream(uri);
                 bos = new BufferedOutputStream(new FileOutputStream(file, false));
+                AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
+                alertDialog.setTitle("New Tag");
+                alertDialog.setMessage("Enter Tag");
+
+                final EditText input = new EditText(this);
+                LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
+                        LinearLayout.LayoutParams.MATCH_PARENT,
+                        LinearLayout.LayoutParams.MATCH_PARENT);
+                input.setLayoutParams(lp);
+                alertDialog.setView(input);
+
+                alertDialog.setPositiveButton("YES",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                name[0] = input.getText().toString();
+                                if (name[0].compareTo("") == 0) {
+                                    Toast.makeText(getApplicationContext(),
+                                            "missing", Toast.LENGTH_SHORT).show();
+                                } else {
+                                    Toast.makeText(getApplicationContext(),
+                                            "save", Toast.LENGTH_SHORT).show();
+                                }
+                            }
+
+                        });
+
+                alertDialog.show();
+//                dbHelper.insertImageData(name[0], imagename);
                 byte[] buf = new byte[1024];
                 is.read(buf);
                 do {

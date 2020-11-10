@@ -31,7 +31,7 @@ public class AudioFragmentAdapter extends RecyclerView.Adapter<AudioFragmentAdap
 
     @Override
     public void onBindViewHolder(@NonNull @NotNull AudioFragmentAdapter.MyViewHolder holder, int position) {
-        String name = audioModels.get(1).getName();
+        String name = audioModels.get(position).getName();
         if (name != null) {
             holder.t_name.setText(name);
         }else {

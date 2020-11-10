@@ -3,10 +3,20 @@ package com.example.myapplication;
 public class LocationModel {
     private int id;
     private String name;
+    private String title;
 
-    public LocationModel(int id, String name) {
+    public LocationModel(int id, String name, String title) {
         this.id = id;
         this.name = name;
+        this.title = title;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     public int getId() {

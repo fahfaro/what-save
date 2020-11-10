@@ -10,6 +10,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -51,42 +52,30 @@ public class LoctionFragment extends Fragment {
     public void onViewCreated(@NonNull @NotNull View view, @Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-//        recyclerView = view.findViewById(R.id.loc_recycler);
-//        dbHelper = new DBHelper(view.getContext());
-//        List<LocationModel> locationModels = dbHelper.getDataSql();
-//        locationFragmentAdapter = new LocationFragmentAdapter(view.getContext(), locationModels);
-//        recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
-//        recyclerView.setAdapter(locationFragmentAdapter);
-        mImageView = view.findViewById(R.id.myImageView);
-//        ContextWrapper cw = new ContextWrapper(view.getContext());
-//        File path = getContext().getDir(DIR_NAME_IMAGE, Context.MODE_PRIVATE);
-//        File file = new File(path, IMAGE_NAME + ".JPEG");
-//        mImageView.setImageDrawable(Drawable.createFromPath(file.toString()));
-//        Bitmap image = null;
-//        File path = getContext().getDir(DIR_NAME_IMAGE, Context.MODE_PRIVATE);
-//        File file = new File(path, IMAGE_NAME + ".JPEG");
-//        InputStream inputStream = null;
-//        try {
-//            inputStream = new FileInputStream(file);
-//            image = BitmapFactory.decodeStream(inputStream);
-//        } catch (FileNotFoundException e) {
-//            e.printStackTrace();
-//            Log.d("TAG", String.valueOf(e));
-//        }
-//        mImageView.setImageBitmap(image);
+        recyclerView = view.findViewById(R.id.loc_recycler);
+        dbHelper = new DBHelper(view.getContext());
+        List<LocationModel> locationModels = dbHelper.getDataSql();
+        locationFragmentAdapter = new LocationFragmentAdapter(view.getContext(), locationModels);
+        recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
+        recyclerView.setAdapter(locationFragmentAdapter);
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT) {
+            @Override
+            public boolean onMove(@NonNull @org.jetbrains.annotations.NotNull RecyclerView recyclerView, @NonNull @org.jetbrains.annotations.NotNull RecyclerView.ViewHolder viewHolder, @NonNull @org.jetbrains.annotations.NotNull RecyclerView.ViewHolder target) {
+                return false;
+            }
+
+            @Override
+            public void onSwiped
+                    (@NonNull @org.jetbrains.annotations.NotNull RecyclerView.ViewHolder viewHolder,
+                     int direction) {
+                dbHelper.deleteSelectedLocation(locationFragmentAdapter.getPostion(viewHolder.getAdapterPosition()));
+                List<LocationModel> location_list = dbHelper.getDataSql();
+            }
+        });
+
+        itemTouchHelper.attachToRecyclerView(recyclerView);
+
     }
 
-    private void readImage(View view) {
-//        Bitmap image = null;
-//        File path = getContext().getDir(DIR_NAME_IMAGE, Context.MODE_PRIVATE);
-//        File file = new File(path, IMAGE_NAME);
-//        InputStream inputStream = null;
-//        try {
-//            inputStream = new FileInputStream(file);
-//            image = BitmapFactory.decodeStream(inputStream);
-//        } catch (FileNotFoundException e) {
-//            e.printStackTrace();
-//        }
-//        mImageView.setImageBitmap(image);
-    }
+
 }

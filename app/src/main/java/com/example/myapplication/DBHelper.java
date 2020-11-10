@@ -40,42 +40,47 @@ public class DBHelper extends SQLiteOpenHelper {
 
     }
 
-    public void insertLocatioData(String title) {
+    public void insertLocatioData(String name, String title) {
         db = getWritableDatabase();
         ContentValues values = new ContentValues();
-        values.put(DBSchema.COLUMN_TITLE, title);
+        values.put(DBSchema.COLUMN_NAME, name);
+        values.put(DBSchema.COLUMN_LOCATION_TITLE, title);
         db.insert(LOCATION_TABLE_NAME, null, values);
         db.close();
     }
 
-    public void insertImageData(String title) {
+    public void insertImageData(String name, String title) {
         db = getWritableDatabase();
         ContentValues values = new ContentValues();
-        values.put(DBSchema.COLUMN_TITLE, title);
+        values.put(DBSchema.COLUMN_NAME, name);
+        values.put(DBSchema.COLUMN_IMAGE_TITLE, title);
         db.insert(IMAGE_TABLE_NAME, null, values);
         db.close();
     }
 
-    public void insertAudioData(String title) {
+    public void insertAudioData(String name, String title) {
         db = getWritableDatabase();
         ContentValues values = new ContentValues();
-        values.put(DBSchema.COLUMN_TITLE, title);
+        values.put(DBSchema.COLUMN_NAME, name);
+        values.put(DBSchema.COLUMN_AUDIO_TITLE, title);
         db.insert(AUDIO_TABLE_NAME, null, values);
         db.close();
     }
 
-    public void insertVideoData(String title) {
+    public void insertVideoData(String name, String title) {
         db = getWritableDatabase();
         ContentValues values = new ContentValues();
-        values.put(DBSchema.COLUMN_TITLE, title);
+        values.put(DBSchema.COLUMN_NAME, name);
+        values.put(DBSchema.COLUMN_VIDEO_TITLE, title);
         db.insert(VIDEO_TABLE_NAME, null, values);
         db.close();
     }
 
-    public void insertDocumentData(String title) {
+    public void insertDocumentData(String name, String title) {
         db = getWritableDatabase();
         ContentValues values = new ContentValues();
-        values.put(DBSchema.COLUMN_TITLE, title);
+        values.put(DBSchema.COLUMN_NAME, name);
+        values.put(DBSchema.COLUMN_DOCUMENT_TITLE, title);
         db.insert(DOC_TABLE_NAME, null, values);
         db.close();
     }
@@ -88,7 +93,8 @@ public class DBHelper extends SQLiteOpenHelper {
             for (cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext()) {
                 int id = cursor.getInt(0);
                 String name = cursor.getString(1);
-                locations_list.add(new LocationModel(id, name));
+                String title = cursor.getString(2);
+                locations_list.add(new LocationModel(id, name, title));
             }
         }
         db.close();
@@ -103,7 +109,8 @@ public class DBHelper extends SQLiteOpenHelper {
             for (cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext()) {
                 int id = cursor.getInt(0);
                 String name = cursor.getString(1);
-                image_list.add(new ImageModel(id, name));
+                String title = cursor.getString(2);
+                image_list.add(new ImageModel(id, name, title));
             }
         }
         db.close();
@@ -118,7 +125,8 @@ public class DBHelper extends SQLiteOpenHelper {
             for (cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext()) {
                 int id = cursor.getInt(0);
                 String name = cursor.getString(1);
-                audio_list.add(new AudioModel(id, name));
+                String title = cursor.getString(2);
+                audio_list.add(new AudioModel(id, name, title));
             }
         }
         db.close();
@@ -133,7 +141,8 @@ public class DBHelper extends SQLiteOpenHelper {
             for (cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext()) {
                 int id = cursor.getInt(0);
                 String name = cursor.getString(1);
-                video_list.add(new VideoModel(id, name));
+                String title = cursor.getString(2);
+                video_list.add(new VideoModel(id, name, title));
             }
         }
         db.close();
@@ -148,10 +157,41 @@ public class DBHelper extends SQLiteOpenHelper {
             for (cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext()) {
                 int id = cursor.getInt(0);
                 String name = cursor.getString(1);
-                document_list.add(new DocumentModel(id, name));
+                String title = cursor.getString(2);
+                document_list.add(new DocumentModel(id, name, title));
             }
         }
         db.close();
         return document_list;
+    }
+
+    public void deleteSelectedLocation(int id) {
+        db = getWritableDatabase();
+        db.execSQL(DBSchema.SQL_DELETE_SELECTED_LOCATION + id);
+        db.close();
+    }
+
+    public void deleteSelectedImage(int id) {
+        db = getWritableDatabase();
+        db.execSQL(DBSchema.SQL_DELETE_SELECTED_IMAGE + id);
+        db.close();
+    }
+
+    public void deleteSelectedAudio(int id) {
+        db = getWritableDatabase();
+        db.execSQL(DBSchema.SQL_DELETE_SELECTED_AUDIO + id);
+        db.close();
+    }
+
+    public void deleteSelectedVideo(int id) {
+        db = getWritableDatabase();
+        db.execSQL(DBSchema.SQL_DELETE_SELECTED_VIDEO + id);
+        db.close();
+    }
+
+    public void deleteSelectedDocument(int id) {
+        db = getWritableDatabase();
+        db.execSQL(DBSchema.SQL_DELETE_SELECTED_DOCUMENT + id);
+        db.close();
     }
 }

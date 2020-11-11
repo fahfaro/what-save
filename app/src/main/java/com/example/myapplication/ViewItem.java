@@ -2,6 +2,7 @@ package com.example.myapplication;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.media.MediaPlayer;
@@ -84,9 +85,11 @@ public class ViewItem extends AppCompatActivity {
     }
 
     private void playVideo(View view) {
+        Intent intent = getIntent();
+        String name = intent.getStringExtra("key");
         videoView.setVisibility(View.VISIBLE);
         File path = getDir(DIR_NAME_VIDEO, MODE_PRIVATE);
-        File file = new File(path, VIDEO_NAME);
+        File file = new File(path, name);
         if (file.exists()) {
             Toast.makeText(this, "Yes", Toast.LENGTH_SHORT).show();
             MediaController mediaController = new MediaController(this);

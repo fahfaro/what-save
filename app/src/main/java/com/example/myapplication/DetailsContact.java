@@ -82,7 +82,6 @@ public class DetailsContact extends AppCompatActivity {
             }
         }
 
-
         viewPager2 = findViewById(R.id.tabviewpager2);
         viewPager2.setAdapter(new DetailPagerAdapter(this));
 
@@ -140,32 +139,29 @@ public class DetailsContact extends AppCompatActivity {
             try {
                 is = getApplicationContext().getContentResolver().openInputStream(uri);
                 bos = new BufferedOutputStream(new FileOutputStream(file, false));
-                AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
-                alertDialog.setTitle("New Tag");
-                alertDialog.setMessage("Enter Tag");
 
-                final EditText input = new EditText(this);
-                LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
-                        LinearLayout.LayoutParams.MATCH_PARENT,
-                        LinearLayout.LayoutParams.MATCH_PARENT);
-                input.setLayoutParams(lp);
-                alertDialog.setView(input);
-
-                alertDialog.setPositiveButton("YES",
-                        new DialogInterface.OnClickListener() {
+                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                builder.setTitle("Name");
+                final View customLayout = getLayoutInflater().inflate(R.layout.custom_layout, null);
+                builder.setView(customLayout);
+                EditText editText = customLayout.findViewById(R.id.editText);
+                EditText editText1 = customLayout.findViewById(R.id.editText1);
+                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                            @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                name[0] = input.getText().toString();
+                                int id = Integer.parseInt(editText.getText().toString());
+                                name[0] = editText1.getText().toString();
                                 if (name[0].compareTo("") == 0) {
                                     Toast.makeText(getApplicationContext(),
                                             "missing", Toast.LENGTH_SHORT).show();
                                 } else {
-                                    dbHelper.insertVideoData(name[0], videoname);
+                                    dbHelper.insertVideoData(id, name[0], videoname);
                                 }
                             }
-
                         });
+                AlertDialog dialog = builder.create();
+                dialog.show();
 
-                alertDialog.show();
                 byte[] buf = new byte[1024];
                 is.read(buf);
                 do {
@@ -204,33 +200,29 @@ public class DetailsContact extends AppCompatActivity {
             try {
                 is = getApplicationContext().getContentResolver().openInputStream(uri);
                 bos = new BufferedOutputStream(new FileOutputStream(file, false));
-                AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
-                alertDialog.setTitle("New Tag");
-                alertDialog.setMessage("Enter Tag");
 
-                final EditText input = new EditText(this);
-                LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
-                        LinearLayout.LayoutParams.MATCH_PARENT,
-                        LinearLayout.LayoutParams.MATCH_PARENT);
-                input.setLayoutParams(lp);
-                alertDialog.setView(input);
+                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                builder.setTitle("Name");
+                final View customLayout = getLayoutInflater().inflate(R.layout.custom_layout, null);
+                builder.setView(customLayout);
+                EditText editText = customLayout.findViewById(R.id.editText);
+                EditText editText1 = customLayout.findViewById(R.id.editText1);
+                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        int id = Integer.parseInt(editText.getText().toString());
+                        name[0] = editText1.getText().toString();
+                        if (name[0].compareTo("") == 0) {
+                            Toast.makeText(getApplicationContext(),
+                                    "missing", Toast.LENGTH_SHORT).show();
+                        } else {
+                            dbHelper.insertVideoData(id, name[0], audioname);
+                        }
+                    }
+                });
+                AlertDialog dialog = builder.create();
+                dialog.show();
 
-                alertDialog.setPositiveButton("YES",
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int which) {
-                                name[0] = input.getText().toString();
-                                if (name[0].compareTo("") == 0) {
-                                    Toast.makeText(getApplicationContext(),
-                                            "missing", Toast.LENGTH_SHORT).show();
-                                } else {
-                                    Toast.makeText(getApplicationContext(),
-                                            "save", Toast.LENGTH_SHORT).show();
-                                }
-                            }
-
-                        });
-
-                alertDialog.show();
                 dbHelper.insertAudioData(name[0], audioname);
                 byte[] buf = new byte[1024];
                 is.read(buf);
@@ -284,34 +276,29 @@ public class DetailsContact extends AppCompatActivity {
             try {
                 is = getApplicationContext().getContentResolver().openInputStream(uri);
                 bos = new BufferedOutputStream(new FileOutputStream(file, false));
-                AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
-                alertDialog.setTitle("New Tag");
-                alertDialog.setMessage("Enter Tag");
 
-                final EditText input = new EditText(this);
-                LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
-                        LinearLayout.LayoutParams.MATCH_PARENT,
-                        LinearLayout.LayoutParams.MATCH_PARENT);
-                input.setLayoutParams(lp);
-                alertDialog.setView(input);
+                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                builder.setTitle("Name");
+                final View customLayout = getLayoutInflater().inflate(R.layout.custom_layout, null);
+                builder.setView(customLayout);
+                EditText editText = customLayout.findViewById(R.id.editText);
+                EditText editText1 = customLayout.findViewById(R.id.editText1);
+                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        int id = Integer.parseInt(editText.getText().toString());
+                        name[0] = editText1.getText().toString();
+                        if (name[0].compareTo("") == 0) {
+                            Toast.makeText(getApplicationContext(),
+                                    "missing", Toast.LENGTH_SHORT).show();
+                        } else {
+                            dbHelper.insertVideoData(id, name[0], imagename);
+                        }
+                    }
+                });
+                AlertDialog dialog = builder.create();
+                dialog.show();
 
-                alertDialog.setPositiveButton("YES",
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int which) {
-                                name[0] = input.getText().toString();
-                                if (name[0].compareTo("") == 0) {
-                                    Toast.makeText(getApplicationContext(),
-                                            "missing", Toast.LENGTH_SHORT).show();
-                                } else {
-                                    Toast.makeText(getApplicationContext(),
-                                            "save", Toast.LENGTH_SHORT).show();
-                                }
-                            }
-
-                        });
-
-                alertDialog.show();
-//                dbHelper.insertImageData(name[0], imagename);
                 byte[] buf = new byte[1024];
                 is.read(buf);
                 do {

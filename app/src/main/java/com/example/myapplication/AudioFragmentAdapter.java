@@ -43,7 +43,9 @@ public class AudioFragmentAdapter extends RecyclerView.Adapter<AudioFragmentAdap
     public int getItemCount() {
         return audioModels.size();
     }
-
+    public int getPostion(int position) {
+        return audioModels.get(position).getId();
+    }
     public class MyViewHolder extends RecyclerView.ViewHolder {
         TextView t_name;
 

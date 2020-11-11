@@ -44,7 +44,9 @@ public class ImageFragmentAdapter extends RecyclerView.Adapter<ImageFragmentAdap
     public int getItemCount() {
         return imageModels.size();
     }
-
+    public int getPostion(int position) {
+        return imageModels.get(position).getId();
+    }
     public class MyViewHolder extends RecyclerView.ViewHolder {
         TextView t_name;
 

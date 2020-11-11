@@ -67,9 +67,10 @@ public class DBHelper extends SQLiteOpenHelper {
         db.close();
     }
 
-    public void insertVideoData(String name, String title) {
+    public void insertVideoData(int id, String name, String title) {
         db = getWritableDatabase();
         ContentValues values = new ContentValues();
+        values.put(DBSchema.COLUMN_ID, id);
         values.put(DBSchema.COLUMN_NAME, name);
         values.put(DBSchema.COLUMN_VIDEO_TITLE, title);
         db.insert(VIDEO_TABLE_NAME, null, values);
@@ -193,5 +194,70 @@ public class DBHelper extends SQLiteOpenHelper {
         db = getWritableDatabase();
         db.execSQL(DBSchema.SQL_DELETE_SELECTED_DOCUMENT + id);
         db.close();
+    }
+
+    public String getLocationName(int pos) {
+        int id = pos + 1;
+        db = getWritableDatabase();
+        String title = null;
+        Cursor cursor = db.rawQuery(DBSchema.SQL_SELECT_LOCATION_BY_ID + id, new String[]{});
+        if (cursor != null) {
+            for (cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext()) {
+                title = cursor.getString(2);
+            }
+        }
+        return title;
+    }
+
+    public String getImageName(int pos) {
+        int id = pos + 1;
+        db = getWritableDatabase();
+        String title = null;
+        Cursor cursor = db.rawQuery(DBSchema.SQL_SELECT_IMAGE_BY_ID + id, new String[]{});
+        if (cursor != null) {
+            for (cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext()) {
+                title = cursor.getString(2);
+            }
+        }
+        return title;
+    }
+
+    public String getAudioName(int pos) {
+        int id = pos + 1;
+        db = getWritableDatabase();
+        String title = null;
+        Cursor cursor = db.rawQuery(DBSchema.SQL_SELECT_AUDIO_BY_ID + id, new String[]{});
+        if (cursor != null) {
+            for (cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext()) {
+                title = cursor.getString(2);
+            }
+        }
+        return title;
+    }
+
+    public String getVideoName(int pos) {
+        int id = pos + 1;
+        db = getWritableDatabase();
+        String title = null;
+        Cursor cursor = db.rawQuery(DBSchema.SQL_SELECT_VIDEO_BY_ID + id, new String[]{});
+        if (cursor != null) {
+            for (cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext()) {
+                title = cursor.getString(2);
+            }
+        }
+        return title;
+    }
+
+    public String getDocumnetName(int pos) {
+        int id = pos + 1;
+        db = getWritableDatabase();
+        String title = null;
+        Cursor cursor = db.rawQuery(DBSchema.SQL_SELECT_DOCUMENT_BY_ID + id, new String[]{});
+        if (cursor != null) {
+            for (cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext()) {
+                title = cursor.getString(2);
+            }
+        }
+        return title;
     }
 }

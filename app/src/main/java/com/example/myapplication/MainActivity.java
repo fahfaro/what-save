@@ -121,11 +121,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void newTask(View view) {
-        db.insertLocatioData("AndroidBull", "Location");
-        db.insertImageData("AndroidBull", "Image");
-        db.insertAudioData("AndroidBull", "Audio");
-        db.insertVideoData("AndroidBull", "Video");
-        db.insertDocumentData("AndroidBull", "Documents");
+//        db.insertLocatioData("AndroidBull", "Location");
+//        db.insertImageData("AndroidBull", "Image");
+//        db.insertAudioData("AndroidBull", "Audio");
+        db.insertVideoData(123, "AndroidBull", "Video");
+//        db.insertDocumentData("AndroidBull", "Documents");
 //        AlertDialog.Builder alertDialog = new AlertDialog.Builder(MainActivity.this);
 //        alertDialog.setTitle("New Tag");
 //        alertDialog.setMessage("Enter Tag");

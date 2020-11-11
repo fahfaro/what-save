@@ -48,7 +48,9 @@ public class DocumentFragmentAdapter extends RecyclerView.Adapter<DocumentFragme
     public int getItemCount() {
         return documentModels.size();
     }
-
+    public int getPostion(int position) {
+        return documentModels.get(position).getId();
+    }
     public class MyViewHolder extends RecyclerView.ViewHolder {
         TextView t_name;
 

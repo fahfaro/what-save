@@ -46,8 +46,7 @@ public class LocationFragmentAdapter extends RecyclerView.Adapter<LocationFragme
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(context, ViewItem.class);
-                context.startActivity(intent);
+
             }
         });
     }

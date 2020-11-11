@@ -69,8 +69,8 @@ public class LoctionFragment extends Fragment {
                     (@NonNull @org.jetbrains.annotations.NotNull RecyclerView.ViewHolder viewHolder,
                      int direction) {
                 dbHelper.deleteSelectedLocation(locationFragmentAdapter.getPostion(viewHolder.getAdapterPosition()));
-                List<LocationModel> location_list = dbHelper.getDataSql();
             }
+
         });
 
         itemTouchHelper.attachToRecyclerView(recyclerView);

@@ -21,7 +21,7 @@ import java.io.FileNotFoundException;
 import java.io.InputStream;
 
 public class ViewItem extends AppCompatActivity {
-    private Button btnImage, btnAudio, btnVideo, btnBack, btnPlay, btnStop;
+    private Button btnBack, btnPlay, btnStop;
     private VideoView videoView;
     private ImageView mImageView;
     private MediaPlayer mPlayer;
@@ -37,19 +37,33 @@ public class ViewItem extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_item);
         init();
-        btnImage.setOnClickListener(this::showImage);
-        btnAudio.setOnClickListener(this::playAudio);
-        btnVideo.setOnClickListener(this::playVideo);
+        Intent intent = getIntent();
+        String titleLocation, titleImage, titleAudio, titleVideo, titleDocument;
+        titleLocation = intent.getStringExtra("Location");
+        titleImage = intent.getStringExtra("Image");
+        titleAudio = intent.getStringExtra("Audio");
+        titleVideo = intent.getStringExtra("Video");
+        titleDocument = intent.getStringExtra("Document");
+        if (titleLocation != null) {
+
+        } else if (titleImage != null) {
+            showImage(titleImage);
+        } else if (titleAudio != null) {
+            playAudio(titleAudio);
+        } else if (titleVideo != null) {
+            playVideo(titleVideo);
+        } else if (titleDocument != null) {
+
+        }
     }
 
-    private void showImage(View view) {
+    private void showImage(String title) {
         mImageView.setVisibility(View.VISIBLE);
         Bitmap image = null;
         File path = getDir(DIR_NAME_IMAGE, MODE_PRIVATE);
-        File file = new File(path, IMAGE_NAME);
+        File file = new File(path, title);
         InputStream inputStream = null;
         if (file.exists()) {
-            Toast.makeText(this, "Yes", Toast.LENGTH_SHORT).show();
             try {
                 inputStream = new FileInputStream(file);
                 image = BitmapFactory.decodeStream(inputStream);
@@ -62,17 +76,15 @@ public class ViewItem extends AppCompatActivity {
         }
     }
 
-    private void playAudio(View view) {
+    private void playAudio(String title) {
         btnBack.setVisibility(View.VISIBLE);
         btnPlay.setVisibility(View.VISIBLE);
         btnStop.setVisibility(View.VISIBLE);
         btnStop.setOnClickListener(this::stopPlay);
         File path = getDir(DIR_NAME_AUDIO, MODE_PRIVATE);
-        File file = new File(path, AUDIO_NAME);
+        File file = new File(path, title);
         if (file.exists()) {
-            Toast.makeText(this, "Yes", Toast.LENGTH_SHORT).show();
             mPlayer = MediaPlayer.create(this, Uri.fromFile(file));
-
             mPlayer.setLooping(true);
             mPlayer.start();
         } else {
@@ -84,14 +96,11 @@ public class ViewItem extends AppCompatActivity {
         mPlayer.stop();
     }
 
-    private void playVideo(View view) {
-        Intent intent = getIntent();
-        String name = intent.getStringExtra("key");
+    private void playVideo(String title) {
         videoView.setVisibility(View.VISIBLE);
         File path = getDir(DIR_NAME_VIDEO, MODE_PRIVATE);
-        File file = new File(path, name);
+        File file = new File(path, title);
         if (file.exists()) {
-            Toast.makeText(this, "Yes", Toast.LENGTH_SHORT).show();
             MediaController mediaController = new MediaController(this);
             videoView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
                 @Override
@@ -110,11 +119,8 @@ public class ViewItem extends AppCompatActivity {
     private void init() {
         mImageView = findViewById(R.id.myImageView);
         videoView = findViewById(R.id.videoview);
-        btnImage = findViewById(R.id.btn_image);
-        btnAudio = findViewById(R.id.btn_audio);
         btnBack = findViewById(R.id.btn_back);
         btnPlay = findViewById(R.id.btn_play);
         btnStop = findViewById(R.id.btn_stop);
-        btnVideo = findViewById(R.id.btn_video);
     }
 }

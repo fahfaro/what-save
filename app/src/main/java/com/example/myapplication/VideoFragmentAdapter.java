@@ -1,13 +1,11 @@
 package com.example.myapplication;
 
-import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -19,17 +17,18 @@ import java.util.List;
 public class VideoFragmentAdapter extends RecyclerView.Adapter<VideoFragmentAdapter.MyViewHolder> {
     private Context context;
     private List<VideoModel> videoModels;
-    public static int pos;
     private DBHelper dbHelper;
 
     public VideoFragmentAdapter(Context context, List<VideoModel> videoModels) {
         this.context = context;
         this.videoModels = videoModels;
     }
+
     public void updateAdaterInsert(List<VideoModel> videoModelList) {
         this.videoModels = videoModelList;
         notifyItemInserted(videoModelList.size());
     }
+
     @NonNull
     @NotNull
     @Override
@@ -44,17 +43,31 @@ public class VideoFragmentAdapter extends RecyclerView.Adapter<VideoFragmentAdap
         dbHelper = new DBHelper(context);
         if (name != null) {
             holder.t_name.setText(name);
-        }else {
+        } else {
             holder.t_name.setText("Empty");
         }
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String title = dbHelper.getVideoName(position);
+                String title;
+                title = dbHelper.getVideoName(position);
                 Intent intent = new Intent(context, ViewItem.class);
-                intent.putExtra("key",title);
+                intent.putExtra("Video", title);
                 context.startActivity(intent);
 
+            }
+        });
+        holder.mView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                Intent sendIntent = new Intent();
+                sendIntent.setAction(Intent.ACTION_SEND);
+                sendIntent.putExtra(Intent.EXTRA_TEXT, "This is my text to send.");
+                sendIntent.setType("text/plain");
+
+                Intent shareIntent = Intent.createChooser(sendIntent, null);
+                context.startActivity(shareIntent);
+                return false;
             }
         });
     }
@@ -63,6 +76,7 @@ public class VideoFragmentAdapter extends RecyclerView.Adapter<VideoFragmentAdap
     public int getItemCount() {
         return videoModels.size();
     }
+
     public class MyViewHolder extends RecyclerView.ViewHolder {
 
         TextView t_name;

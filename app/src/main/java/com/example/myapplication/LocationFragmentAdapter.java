@@ -17,15 +17,18 @@ import java.util.List;
 public class LocationFragmentAdapter extends RecyclerView.Adapter<LocationFragmentAdapter.MyViewHolder> {
     private Context context;
     private List<LocationModel> location_models;
+    private DBHelper dbHelper;
 
     public LocationFragmentAdapter(Context context, List<LocationModel> location_models) {
         this.context = context;
         this.location_models = location_models;
     }
+
     public void updateAdaterInsert(List<LocationModel> locationModelList) {
         this.location_models = locationModelList;
         notifyItemInserted(locationModelList.size());
     }
+
     @NonNull
     @NotNull
     @Override
@@ -36,23 +39,28 @@ public class LocationFragmentAdapter extends RecyclerView.Adapter<LocationFragme
 
     @Override
     public void onBindViewHolder(@NonNull @NotNull LocationFragmentAdapter.MyViewHolder holder, int position) {
+        dbHelper = new DBHelper(context);
         String name = location_models.get(position).getName();
-        String title = location_models.get(position).getName();
         if (name != null) {
             holder.t_name.setText(name);
-        }else {
+        } else {
             holder.t_name.setText("Empty");
         }
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                String title = dbHelper.getLocationName(position);
+                Intent intent = new Intent(context, ViewItem.class);
+                intent.putExtra("Location", title);
+                context.startActivity(intent);
             }
         });
     }
+
     public int getPostion(int position) {
         return location_models.get(position).getId();
     }
+
     @Override
     public int getItemCount() {
         return location_models.size();

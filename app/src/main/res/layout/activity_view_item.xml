@@ -60,35 +60,4 @@
         android:visibility="gone"
         app:layout_constraintBaseline_toBaselineOf="@+id/btn_play"
         app:layout_constraintStart_toEndOf="@+id/btn_play" />
-
-    <Button
-        android:id="@+id/btn_image"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginBottom="60dp"
-        android:text="Image"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <Button
-        android:id="@+id/btn_audio"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="20dp"
-        android:layout_marginBottom="30dp"
-        android:text="Audio"
-        app:layout_constraintBottom_toTopOf="@+id/btn_video"
-        app:layout_constraintEnd_toEndOf="parent" />
-
-    <Button
-        android:id="@+id/btn_video"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="20dp"
-        android:layout_marginBottom="30dp"
-        android:text="Video"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
-
 </androidx.constraintlayout.widget.ConstraintLayout>

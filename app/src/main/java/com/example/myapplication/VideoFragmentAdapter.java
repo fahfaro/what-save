@@ -2,22 +2,28 @@ package com.example.myapplication;
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.FileProvider;
 import androidx.recyclerview.widget.RecyclerView;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.io.File;
+import java.net.URI;
 import java.util.List;
 
 public class VideoFragmentAdapter extends RecyclerView.Adapter<VideoFragmentAdapter.MyViewHolder> {
     private Context context;
     private List<VideoModel> videoModels;
     private DBHelper dbHelper;
+    private static final String DIR_NAME_VIDEO = "video";
 
     public VideoFragmentAdapter(Context context, List<VideoModel> videoModels) {
         this.context = context;
@@ -39,10 +45,10 @@ public class VideoFragmentAdapter extends RecyclerView.Adapter<VideoFragmentAdap
 
     @Override
     public void onBindViewHolder(@NonNull @NotNull VideoFragmentAdapter.MyViewHolder holder, int position) {
-        String name = videoModels.get(position).getName();
+        final String[] name = {videoModels.get(position).getName()};
         dbHelper = new DBHelper(context);
-        if (name != null) {
-            holder.t_name.setText(name);
+        if (name[0] != null) {
+            holder.t_name.setText(name[0]);
         } else {
             holder.t_name.setText("Empty");
         }
@@ -52,7 +58,7 @@ public class VideoFragmentAdapter extends RecyclerView.Adapter<VideoFragmentAdap
                 String title;
                 title = dbHelper.getVideoName(position);
                 Intent intent = new Intent(context, ViewItem.class);
-                intent.putExtra("Video", title);
+                intent.putExtra("video", title);
                 context.startActivity(intent);
 
             }
@@ -60,13 +66,17 @@ public class VideoFragmentAdapter extends RecyclerView.Adapter<VideoFragmentAdap
         holder.mView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-                Intent sendIntent = new Intent();
-                sendIntent.setAction(Intent.ACTION_SEND);
-                sendIntent.putExtra(Intent.EXTRA_TEXT, "This is my text to send.");
-                sendIntent.setType("text/plain");
-
-                Intent shareIntent = Intent.createChooser(sendIntent, null);
-                context.startActivity(shareIntent);
+                String title;
+                title = dbHelper.getVideoName(position);
+                File path = context.getDir(DIR_NAME_VIDEO,Context.MODE_PRIVATE);
+                File file = new File(path, title);
+                Uri path1 = FileProvider.getUriForFile(context,"com.example.myapplication.fileprovider",file);
+                Intent shareIntent = new Intent();
+                shareIntent.setAction(Intent.ACTION_SEND);
+                shareIntent.putExtra(Intent.EXTRA_STREAM, path1);
+                shareIntent.setFlags( Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                shareIntent.setType("video/*");
+                context.startActivity(Intent.createChooser(shareIntent, null));
                 return false;
             }
         });

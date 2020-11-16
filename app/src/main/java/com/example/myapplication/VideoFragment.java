@@ -1,5 +1,6 @@
 package com.example.myapplication;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -10,6 +11,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
@@ -40,7 +42,7 @@ public class VideoFragment extends Fragment {
         recyclerView = view.findViewById(R.id.vid_recycler);
         dbHelper = new DBHelper(view.getContext());
         List<VideoModel> videoModels = dbHelper.getVideoDataSql();
-        videoFragmentAdapter = new VideoFragmentAdapter(view.getContext(),videoModels);
+        videoFragmentAdapter = new VideoFragmentAdapter(view.getContext(), videoModels);
         recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
         recyclerView.setAdapter(videoFragmentAdapter);
         videoFragmentAdapter.updateAdaterInsert(videoModels);

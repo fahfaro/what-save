@@ -2,13 +2,17 @@ package com.example.myapplication;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.PowerManager;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.MediaController;
@@ -25,25 +29,25 @@ public class ViewItem extends AppCompatActivity {
     private VideoView videoView;
     private ImageView mImageView;
     private MediaPlayer mPlayer;
-    private static final String DIR_NAME_IMAGE = "Images";
-    private static final String DIR_NAME_AUDIO = "Audio";
-    private static final String IMAGE_NAME = "5285.jpeg";
-    private static final String AUDIO_NAME = "4584.mp3";
-    private static final String VIDEO_NAME = "5080.mp4";
-    private static final String DIR_NAME_VIDEO = "Video";
+    private static final String DIR_NAME_IMAGE = "images";
+    private static final String DIR_NAME_AUDIO = "audio";
+    private static final String DIR_NAME_VIDEO = "video";
+    private PowerManager.WakeLock wl;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_item);
+        PowerManager pm = (PowerManager) getSystemService(this.POWER_SERVICE);
+        wl = pm.newWakeLock(PowerManager.FULL_WAKE_LOCK, null);
         init();
         Intent intent = getIntent();
         String titleLocation, titleImage, titleAudio, titleVideo, titleDocument;
-        titleLocation = intent.getStringExtra("Location");
-        titleImage = intent.getStringExtra("Image");
-        titleAudio = intent.getStringExtra("Audio");
-        titleVideo = intent.getStringExtra("Video");
-        titleDocument = intent.getStringExtra("Document");
+        titleLocation = intent.getStringExtra("pdf");
+        titleImage = intent.getStringExtra("image");
+        titleAudio = intent.getStringExtra("audio");
+        titleVideo = intent.getStringExtra("video");
+        titleDocument = intent.getStringExtra("document");
         if (titleLocation != null) {
 
         } else if (titleImage != null) {
@@ -58,6 +62,7 @@ public class ViewItem extends AppCompatActivity {
     }
 
     private void showImage(String title) {
+        getSupportActionBar().setTitle("WhatsSave");
         mImageView.setVisibility(View.VISIBLE);
         Bitmap image = null;
         File path = getDir(DIR_NAME_IMAGE, MODE_PRIVATE);
@@ -77,6 +82,7 @@ public class ViewItem extends AppCompatActivity {
     }
 
     private void playAudio(String title) {
+        getSupportActionBar().setTitle("WhatsSave");
         btnBack.setVisibility(View.VISIBLE);
         btnPlay.setVisibility(View.VISIBLE);
         btnStop.setVisibility(View.VISIBLE);
@@ -84,9 +90,16 @@ public class ViewItem extends AppCompatActivity {
         File path = getDir(DIR_NAME_AUDIO, MODE_PRIVATE);
         File file = new File(path, title);
         if (file.exists()) {
+
             mPlayer = MediaPlayer.create(this, Uri.fromFile(file));
             mPlayer.setLooping(true);
-            mPlayer.start();
+            int count = 0;
+            if (count == 0) {
+                mPlayer.start();
+            } else {
+                mPlayer.pause();
+                count++;
+            }
         } else {
             Toast.makeText(this, "No", Toast.LENGTH_SHORT).show();
         }
@@ -97,6 +110,8 @@ public class ViewItem extends AppCompatActivity {
     }
 
     private void playVideo(String title) {
+        wl.acquire();
+        getSupportActionBar().hide();
         videoView.setVisibility(View.VISIBLE);
         File path = getDir(DIR_NAME_VIDEO, MODE_PRIVATE);
         File file = new File(path, title);
@@ -117,7 +132,7 @@ public class ViewItem extends AppCompatActivity {
     }
 
     private void init() {
-        mImageView = findViewById(R.id.myImageView);
+        mImageView = findViewById(R.id.myImageViewMain);
         videoView = findViewById(R.id.videoview);
         btnBack = findViewById(R.id.btn_back);
         btnPlay = findViewById(R.id.btn_play);

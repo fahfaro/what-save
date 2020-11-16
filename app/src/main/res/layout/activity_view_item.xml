@@ -8,10 +8,9 @@
 
     <VideoView
         android:id="@+id/videoview"
-        android:layout_width="284dp"
-        android:layout_height="284dp"
-        android:layout_marginLeft="50dp"
-        android:layout_marginTop="50dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
         android:visibility="gone"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -19,8 +18,8 @@
 
     <ImageView
         android:id="@+id/myImageViewMain"
-        android:layout_width="284dp"
-        android:layout_height="284dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginTop="50dp"
         android:src="@drawable/ic_launcher_background"
         android:visibility="gone"

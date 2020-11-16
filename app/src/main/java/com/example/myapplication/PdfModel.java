@@ -1,11 +1,11 @@
 package com.example.myapplication;
 
-public class LocationModel {
+public class PdfModel {
     private int id;
     private String name;
     private String title;
 
-    public LocationModel(int id, String name, String title) {
+    public PdfModel(int id, String name, String title) {
         this.id = id;
         this.name = name;
         this.title = title;

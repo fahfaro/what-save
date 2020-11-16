@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 import androidx.annotation.Nullable;
 
@@ -40,7 +41,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
     }
 
-    public void insertLocatioData(String name, String title) {
+    public void insertPdfData(long id, String name, String title) {
         db = getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(DBSchema.COLUMN_NAME, name);
@@ -49,16 +50,17 @@ public class DBHelper extends SQLiteOpenHelper {
         db.close();
     }
 
-    public void insertImageData(String name, String title) {
+    public void insertImageData(long  id, String name, String title) {
         db = getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(DBSchema.COLUMN_NAME, name);
         values.put(DBSchema.COLUMN_IMAGE_TITLE, title);
         db.insert(IMAGE_TABLE_NAME, null, values);
-        db.close();
+        Log.d("IDCHECK", String.valueOf(id));
+//        db.close();
     }
 
-    public void insertAudioData(String name, String title) {
+    public void insertAudioData(long id, String name, String title) {
         db = getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(DBSchema.COLUMN_NAME, name);
@@ -67,7 +69,7 @@ public class DBHelper extends SQLiteOpenHelper {
         db.close();
     }
 
-    public void insertVideoData(int id, String name, String title) {
+    public void insertVideoData(long id, String name, String title) {
         db = getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(DBSchema.COLUMN_ID, id);
@@ -77,7 +79,7 @@ public class DBHelper extends SQLiteOpenHelper {
         db.close();
     }
 
-    public void insertDocumentData(String name, String title) {
+    public void insertDocumentData(int id, String name, String title) {
         db = getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(DBSchema.COLUMN_NAME, name);
@@ -86,8 +88,8 @@ public class DBHelper extends SQLiteOpenHelper {
         db.close();
     }
 
-    public List<LocationModel> getDataSql() {
-        List<LocationModel> locations_list = new ArrayList<LocationModel>();
+    public List<PdfModel> getDataSql() {
+        List<PdfModel> locations_list = new ArrayList<PdfModel>();
         db = getReadableDatabase();
         Cursor cursor = db.rawQuery(DBSchema.SQL_SELECT_ALL_LOCATION, new String[]{});
         if (cursor != null) {
@@ -95,7 +97,7 @@ public class DBHelper extends SQLiteOpenHelper {
                 int id = cursor.getInt(0);
                 String name = cursor.getString(1);
                 String title = cursor.getString(2);
-                locations_list.add(new LocationModel(id, name, title));
+                locations_list.add(new PdfModel(id, name, title));
             }
         }
         db.close();
@@ -206,6 +208,7 @@ public class DBHelper extends SQLiteOpenHelper {
                 title = cursor.getString(2);
             }
         }
+        db.close();
         return title;
     }
 
@@ -219,6 +222,7 @@ public class DBHelper extends SQLiteOpenHelper {
                 title = cursor.getString(2);
             }
         }
+        db.close();
         return title;
     }
 
@@ -232,6 +236,7 @@ public class DBHelper extends SQLiteOpenHelper {
                 title = cursor.getString(2);
             }
         }
+        db.close();
         return title;
     }
 
@@ -245,6 +250,7 @@ public class DBHelper extends SQLiteOpenHelper {
                 title = cursor.getString(2);
             }
         }
+        db.close();
         return title;
     }
 
@@ -258,6 +264,7 @@ public class DBHelper extends SQLiteOpenHelper {
                 title = cursor.getString(2);
             }
         }
+        db.close();
         return title;
     }
 }

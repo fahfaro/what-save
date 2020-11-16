@@ -2,43 +2,47 @@ package com.example.myapplication;
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.FileProvider;
 import androidx.recyclerview.widget.RecyclerView;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.io.File;
 import java.util.List;
 
-public class LocationFragmentAdapter extends RecyclerView.Adapter<LocationFragmentAdapter.MyViewHolder> {
+public class PdfFragmentAdapter extends RecyclerView.Adapter<PdfFragmentAdapter.MyViewHolder> {
     private Context context;
-    private List<LocationModel> location_models;
+    private List<PdfModel> location_models;
     private DBHelper dbHelper;
+    private static final String DIR_NAME_PDF = "pdf";
 
-    public LocationFragmentAdapter(Context context, List<LocationModel> location_models) {
+    public PdfFragmentAdapter(Context context, List<PdfModel> location_models) {
         this.context = context;
         this.location_models = location_models;
     }
 
-    public void updateAdaterInsert(List<LocationModel> locationModelList) {
-        this.location_models = locationModelList;
-        notifyItemInserted(locationModelList.size());
+    public void updateAdaterInsert(List<PdfModel> pdfModelList) {
+        this.location_models = pdfModelList;
+        notifyItemInserted(pdfModelList.size());
     }
 
     @NonNull
     @NotNull
     @Override
-    public LocationFragmentAdapter.MyViewHolder onCreateViewHolder(@NonNull @NotNull ViewGroup parent, int viewType) {
+    public PdfFragmentAdapter.MyViewHolder onCreateViewHolder(@NonNull @NotNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(context).inflate(R.layout.location_view, parent, false);
         return new MyViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull @NotNull LocationFragmentAdapter.MyViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull @NotNull PdfFragmentAdapter.MyViewHolder holder, int position) {
         dbHelper = new DBHelper(context);
         String name = location_models.get(position).getName();
         if (name != null) {
@@ -51,8 +55,25 @@ public class LocationFragmentAdapter extends RecyclerView.Adapter<LocationFragme
             public void onClick(View v) {
                 String title = dbHelper.getLocationName(position);
                 Intent intent = new Intent(context, ViewItem.class);
-                intent.putExtra("Location", title);
+                intent.putExtra("pdf", title);
                 context.startActivity(intent);
+            }
+        });
+        holder.mView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                String title;
+                title = dbHelper.getLocationName(position);
+                File path = context.getDir(DIR_NAME_PDF, Context.MODE_PRIVATE);
+                File file = new File(path, title);
+                Uri path1 = FileProvider.getUriForFile(context, "com.example.myapplication.fileprovider", file);
+                Intent shareIntent = new Intent();
+                shareIntent.setAction(Intent.ACTION_SEND);
+                shareIntent.putExtra(Intent.EXTRA_STREAM, path1);
+                shareIntent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                shareIntent.setType("pdf/*");
+                context.startActivity(Intent.createChooser(shareIntent, null));
+                return false;
             }
         });
     }

@@ -12,6 +12,9 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -39,26 +42,19 @@ import static android.icu.util.ULocale.getName;
 
 public class DetailsContact extends AppCompatActivity {
     private String textdata;
-    EditText editText;
-    private TextView mTextView;
-    private ImageView mImageView;
     private ViewPager2 viewPager2;
-    Button btn;
-    private static final String DIR_NAME_IMAGE = "Images";
-    private static final String DIR_NAME_AUDIO = "Audio";
-    private static final String DIR_NAME_VIDEO = "Video";
-    private static final String IMAGE_NAME = "Test_Image.jpg";
+    private static final String DIR_NAME_PDF = "pdf";
+    private static final String DIR_NAME_IMAGE = "images";
+    private static final String DIR_NAME_AUDIO = "audio";
+    private static final String DIR_NAME_VIDEO = "video";
     private DBHelper dbHelper;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_details_contact);
+        getSupportActionBar().setTitle("WhatsSave");
         dbHelper = new DBHelper(this);
-        mImageView = findViewById(R.id.myImageView);
-//        btn = findViewById(R.id.btn);
-//        btn.setOnClickListener(this::insert);
         Intent intent = getIntent();
         if (intent != null) {
             String action = intent.getAction();
@@ -81,41 +77,33 @@ public class DetailsContact extends AppCompatActivity {
                 }
             }
         }
-
         viewPager2 = findViewById(R.id.tabviewpager2);
         viewPager2.setAdapter(new DetailPagerAdapter(this));
-
         TabLayout tabLayout = findViewById(R.id.tab_layout);
-
         TabLayoutMediator tabLayoutMediator = new TabLayoutMediator(tabLayout, viewPager2, new TabLayoutMediator.TabConfigurationStrategy() {
             @Override
             public void onConfigureTab(@NonNull @NotNull TabLayout.Tab tab, int position) {
                 switch (position) {
                     case 0: {
-                        tab.setText("Location");
-                        tab.setIcon(R.drawable.ic_location);
+                        tab.setIcon(R.drawable.ic_pdf);
                         break;
                     }
                     case 1: {
-                        tab.setText("Images");
                         tab.setIcon(R.drawable.ic_image);
                         break;
                     }
                     case 2: {
-                        tab.setText("Audio");
                         tab.setIcon(R.drawable.ic_audio);
                         break;
                     }
                     case 3: {
-                        tab.setText("Video");
                         tab.setIcon(R.drawable.ic_video);
                         break;
                     }
-                    case 4: {
-                        tab.setText("Documents");
-                        tab.setIcon(R.drawable.ic_pending);
-                        break;
-                    }
+//                    case 4: {
+//                        tab.setIcon(R.drawable.ic_document);
+//                        break;
+//                    }
                 }
             }
         });
@@ -139,29 +127,26 @@ public class DetailsContact extends AppCompatActivity {
             try {
                 is = getApplicationContext().getContentResolver().openInputStream(uri);
                 bos = new BufferedOutputStream(new FileOutputStream(file, false));
-
                 AlertDialog.Builder builder = new AlertDialog.Builder(this);
                 builder.setTitle("Name");
                 final View customLayout = getLayoutInflater().inflate(R.layout.custom_layout, null);
                 builder.setView(customLayout);
-                EditText editText = customLayout.findViewById(R.id.editText);
                 EditText editText1 = customLayout.findViewById(R.id.editText1);
                 builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                int id = Integer.parseInt(editText.getText().toString());
-                                name[0] = editText1.getText().toString();
-                                if (name[0].compareTo("") == 0) {
-                                    Toast.makeText(getApplicationContext(),
-                                            "missing", Toast.LENGTH_SHORT).show();
-                                } else {
-                                    dbHelper.insertVideoData(id, name[0], videoname);
-                                }
-                            }
-                        });
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        long id = System.currentTimeMillis();
+                        name[0] = editText1.getText().toString();
+                        if (name[0].compareTo("") == 0) {
+                            Toast.makeText(getApplicationContext(),
+                                    "missing", Toast.LENGTH_SHORT).show();
+                        } else {
+                            dbHelper.insertVideoData(id, name[0], videoname);
+                        }
+                    }
+                });
                 AlertDialog dialog = builder.create();
                 dialog.show();
-
                 byte[] buf = new byte[1024];
                 is.read(buf);
                 do {
@@ -170,17 +155,55 @@ public class DetailsContact extends AppCompatActivity {
 
             } catch (IOException e) {
                 e.printStackTrace();
+            } finally {
+                try {
+                    if (is != null) is.close();
+                    if (bos != null) bos.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
-//             finally {
-//                try {
-//                    if (is != null) is.close();
-//                    if (bos != null) bos.close();
-//                } catch (IOException e) {
-//                    e.printStackTrace();
-//                }
-//            }
-            Log.d("Video File Path : ", "" + uri.getPath());
         }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.detail_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle item selection
+        switch (item.getItemId()) {
+            case R.id.edit:
+                edit();
+                return true;
+            case R.id.delete:
+                delete();
+                return true;
+            case R.id.detail:
+                detail();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    private void detail() {
+        Intent intent = new Intent(this, ViewItem.class);
+        startActivity(intent);
+    }
+
+    private void delete() {
+        Intent intent = new Intent(this, ViewItem.class);
+        startActivity(intent);
+    }
+
+    private void edit() {
+        Intent intent = new Intent(this, ViewItem.class);
+        startActivity(intent);
     }
 
     private void handleAudio(Intent intent) {
@@ -200,30 +223,26 @@ public class DetailsContact extends AppCompatActivity {
             try {
                 is = getApplicationContext().getContentResolver().openInputStream(uri);
                 bos = new BufferedOutputStream(new FileOutputStream(file, false));
-
                 AlertDialog.Builder builder = new AlertDialog.Builder(this);
                 builder.setTitle("Name");
                 final View customLayout = getLayoutInflater().inflate(R.layout.custom_layout, null);
                 builder.setView(customLayout);
-                EditText editText = customLayout.findViewById(R.id.editText);
                 EditText editText1 = customLayout.findViewById(R.id.editText1);
                 builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        int id = Integer.parseInt(editText.getText().toString());
+                        long id = System.currentTimeMillis();
                         name[0] = editText1.getText().toString();
                         if (name[0].compareTo("") == 0) {
                             Toast.makeText(getApplicationContext(),
                                     "missing", Toast.LENGTH_SHORT).show();
                         } else {
-                            dbHelper.insertVideoData(id, name[0], audioname);
+                            dbHelper.insertAudioData(id, name[0], audioname);
                         }
                     }
                 });
                 AlertDialog dialog = builder.create();
                 dialog.show();
-
-                dbHelper.insertAudioData(name[0], audioname);
                 byte[] buf = new byte[1024];
                 is.read(buf);
                 do {
@@ -239,22 +258,65 @@ public class DetailsContact extends AppCompatActivity {
                     e.printStackTrace();
                 }
             }
-            Log.d("Audio File Path : ", "" + uri.getPath());
         }
-    }
-
-    private void insert(View view) {
-        String name1 = null, messag2 = null;
-//        editText = findViewById(R.id.ed_text);
-//        messag = editText.getText().toString();
-        dbHelper.insertLocatioData(name1, messag2);
     }
 
     private void handlePdfFile(Intent intent) {
         Uri pdffile = intent.getParcelableExtra(Intent.EXTRA_STREAM);
-        if (pdffile != null) {
-            Log.d("Pdf File Path : ", "" + pdffile.getPath());
+        final String[] name = {null};
+        String pdfname;
+        String uriPath = pdffile.getPath();
+        String pdfName = null;
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
+
+            pdfName = getName(uriPath);
         }
+        pdfname = pdfName + ".pdf";
+        if (pdffile != null) {
+            File path = getDir(DIR_NAME_PDF, MODE_PRIVATE);
+            File file = new File(path, pdfname);
+            InputStream is = null;
+            BufferedOutputStream bos = null;
+            try {
+                is = getApplicationContext().getContentResolver().openInputStream(pdffile);
+                bos = new BufferedOutputStream(new FileOutputStream(file, false));
+                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                builder.setTitle("Name");
+                final View customLayout = getLayoutInflater().inflate(R.layout.custom_layout, null);
+                builder.setView(customLayout);
+                EditText editText1 = customLayout.findViewById(R.id.editText1);
+                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        long id = System.currentTimeMillis();
+                        name[0] = editText1.getText().toString();
+                        if (name[0].compareTo("") == 0) {
+                            Toast.makeText(getApplicationContext(),
+                                    "missing", Toast.LENGTH_SHORT).show();
+                        } else {
+                            dbHelper.insertPdfData(id, name[0], pdfname);
+                        }
+                    }
+                });
+                AlertDialog dialog = builder.create();
+                dialog.show();
+                byte[] buf = new byte[1024];
+                is.read(buf);
+                do {
+                    bos.write(buf);
+                } while (is.read(buf) != -1);
+            } catch (IOException e) {
+                e.printStackTrace();
+            } finally {
+                try {
+                    if (is != null) is.close();
+                    if (bos != null) bos.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
     }
 
     private void handleImage(Intent intent) {
@@ -276,29 +338,27 @@ public class DetailsContact extends AppCompatActivity {
             try {
                 is = getApplicationContext().getContentResolver().openInputStream(uri);
                 bos = new BufferedOutputStream(new FileOutputStream(file, false));
-
                 AlertDialog.Builder builder = new AlertDialog.Builder(this);
                 builder.setTitle("Name");
                 final View customLayout = getLayoutInflater().inflate(R.layout.custom_layout, null);
                 builder.setView(customLayout);
-                EditText editText = customLayout.findViewById(R.id.editText);
+//                EditText editText = customLayout.findViewById(R.id.editText);
                 EditText editText1 = customLayout.findViewById(R.id.editText1);
                 builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        int id = Integer.parseInt(editText.getText().toString());
+                        long id = System.currentTimeMillis();
                         name[0] = editText1.getText().toString();
                         if (name[0].compareTo("") == 0) {
                             Toast.makeText(getApplicationContext(),
                                     "missing", Toast.LENGTH_SHORT).show();
                         } else {
-                            dbHelper.insertVideoData(id, name[0], imagename);
+                            dbHelper.insertImageData(id, name[0], imagename);
                         }
                     }
                 });
                 AlertDialog dialog = builder.create();
                 dialog.show();
-
                 byte[] buf = new byte[1024];
                 is.read(buf);
                 do {
@@ -306,29 +366,20 @@ public class DetailsContact extends AppCompatActivity {
                 } while (is.read(buf) != -1);
             } catch (IOException e) {
                 e.printStackTrace();
+            } finally {
+                try {
+                    if (is != null) is.close();
+                    if (bos != null) bos.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
-//            finally {
-//                try {
-//                    if (is != null) is.close();
-//                    if (bos != null) bos.close();
-//                } catch (IOException e) {
-//                    e.printStackTrace();
-//                }
-//            }
-            Log.d("Image File Path : ", "" + uri.getPath());
         }
     }
 
     private void handleTextData(Intent intent) {
         textdata = intent.getStringExtra(Intent.EXTRA_TEXT);
         if (textdata != null) {
-
-//            mTextView = findViewById(R.id.myFrTextView);
-//            mTextView.setVisibility(View.VISIBLE);
-//            mTextView.setText(textdata);
-
-
-            Log.d("TextDat", "" + textdata);
         }
     }
 
@@ -339,20 +390,6 @@ public class DetailsContact extends AppCompatActivity {
                 Log.d("Path ", "" + uri.getPath());
             }
         }
-    }
-
-    private void readImage(View view) {
-        Bitmap image = null;
-        File path = getDir(DIR_NAME_IMAGE, MODE_PRIVATE);
-        File file = new File(path, IMAGE_NAME);
-        InputStream inputStream = null;
-        try {
-            inputStream = new FileInputStream(file);
-            image = BitmapFactory.decodeStream(inputStream);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-        mImageView.setImageBitmap(image);
     }
 
     public static String getName(String filename) {

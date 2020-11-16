@@ -3,8 +3,6 @@ package com.example.myapplication;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentStatePagerAdapter;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 
 import org.jetbrains.annotations.NotNull;
@@ -20,7 +18,7 @@ public class DetailPagerAdapter extends FragmentStateAdapter {
     public Fragment createFragment(int position) {
         switch (position) {
             case 0: {
-                return new LoctionFragment();
+                return new PdfFragment();
             }
             case 1: {
                 return new ImageFragment();
@@ -38,7 +36,7 @@ public class DetailPagerAdapter extends FragmentStateAdapter {
 
     @Override
     public int getItemCount() {
-        return 5;
+        return 4;
     }
 
 }

@@ -30,16 +30,16 @@ public class PdfFragment extends Fragment {
     @org.jetbrains.annotations.Nullable
     @Override
     public View onCreateView(@NonNull @NotNull LayoutInflater inflater, @Nullable @org.jetbrains.annotations.Nullable ViewGroup container, @Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
-        return (inflater.inflate(R.layout.fragment_location, container, false));
+        return (inflater.inflate(R.layout.fragment_pdf, container, false));
     }
 
     @Override
     public void onViewCreated(@NonNull @NotNull View view, @Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        recyclerView = view.findViewById(R.id.loc_recycler);
+        recyclerView = view.findViewById(R.id.pdf_recycler);
         dbHelper = new DBHelper(view.getContext());
-        List<PdfModel> pdfModels = dbHelper.getDataSql();
+        List<PdfModel> pdfModels = dbHelper.getPdfDataSql();
         pdfFragmentAdapter = new PdfFragmentAdapter(view.getContext(), pdfModels);
         recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
         recyclerView.setAdapter(pdfFragmentAdapter);
@@ -53,7 +53,7 @@ public class PdfFragment extends Fragment {
             public void onSwiped
                     (@NonNull @org.jetbrains.annotations.NotNull RecyclerView.ViewHolder viewHolder,
                      int direction) {
-                dbHelper.deleteSelectedLocation(pdfFragmentAdapter.getPostion(viewHolder.getAdapterPosition()));
+                dbHelper.deleteSelectedPdf(pdfFragmentAdapter.getPostion(viewHolder.getAdapterPosition()));
             }
 
         });

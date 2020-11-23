@@ -22,10 +22,12 @@ import android.widget.VideoView;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.InputStream;
 
 public class ViewItem extends AppCompatActivity {
     private Button btnBack, btnPlay, btnStop;
+    private String titleLocation, titleImage, titleAudio, titleVideo, titleDocument;
     private VideoView videoView;
     private ImageView mImageView;
     private MediaPlayer mPlayer;
@@ -33,23 +35,21 @@ public class ViewItem extends AppCompatActivity {
     private static final String DIR_NAME_AUDIO = "audio";
     private static final String DIR_NAME_VIDEO = "video";
     private PowerManager.WakeLock wl;
+    private int count = 0;
+    private File file;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_item);
-        PowerManager pm = (PowerManager) getSystemService(this.POWER_SERVICE);
-        wl = pm.newWakeLock(PowerManager.FULL_WAKE_LOCK, null);
         init();
         Intent intent = getIntent();
-        String titleLocation, titleImage, titleAudio, titleVideo, titleDocument;
         titleLocation = intent.getStringExtra("pdf");
         titleImage = intent.getStringExtra("image");
         titleAudio = intent.getStringExtra("audio");
         titleVideo = intent.getStringExtra("video");
         titleDocument = intent.getStringExtra("document");
         if (titleLocation != null) {
-
         } else if (titleImage != null) {
             showImage(titleImage);
         } else if (titleAudio != null) {
@@ -86,31 +86,59 @@ public class ViewItem extends AppCompatActivity {
         btnBack.setVisibility(View.VISIBLE);
         btnPlay.setVisibility(View.VISIBLE);
         btnStop.setVisibility(View.VISIBLE);
+        btnBack.setOnClickListener(this::backParent);
+        btnPlay.setOnClickListener(this::playAudio);
         btnStop.setOnClickListener(this::stopPlay);
         File path = getDir(DIR_NAME_AUDIO, MODE_PRIVATE);
-        File file = new File(path, title);
+        file = new File(path, title);
         if (file.exists()) {
 
             mPlayer = MediaPlayer.create(this, Uri.fromFile(file));
             mPlayer.setLooping(true);
-            int count = 0;
+
             if (count == 0) {
                 mPlayer.start();
+                count++;
             } else {
                 mPlayer.pause();
-                count++;
+                count--;
             }
         } else {
             Toast.makeText(this, "No", Toast.LENGTH_SHORT).show();
         }
     }
 
+    private void backParent(View view) {
+        Intent intent = new Intent(this, DetailsContact.class);
+        startActivity(intent);
+    }
+
+    private void playpause() {
+        if (count < 0) {
+            count ++;
+            mPlayer = MediaPlayer.create(this, Uri.fromFile(file));
+            mPlayer.setLooping(true);
+            mPlayer.start();
+        } else if (count == 0) {
+            mPlayer.start();
+            count++;
+        } else {
+            mPlayer.pause();
+            count--;
+        }
+
+    }
+
+    private void playAudio(View view) {
+        playpause();
+    }
+
     private void stopPlay(View view) {
         mPlayer.stop();
+        count --;
     }
 
     private void playVideo(String title) {
-        wl.acquire();
         getSupportActionBar().hide();
         videoView.setVisibility(View.VISIBLE);
         File path = getDir(DIR_NAME_VIDEO, MODE_PRIVATE);

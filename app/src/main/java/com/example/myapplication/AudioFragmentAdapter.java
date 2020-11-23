@@ -49,7 +49,8 @@ public class AudioFragmentAdapter extends RecyclerView.Adapter<AudioFragmentAdap
             @Override
             public void onClick(View v) {
                 String title;
-                title = dbHelper.getAudioName(position);
+                long idfordelete = audioModels.get(position).getId();
+                title = dbHelper.getAudioName(idfordelete);
                 Intent intent = new Intent(context, ViewItem.class);
                 intent.putExtra("audio", title);
                 context.startActivity(intent);
@@ -59,7 +60,8 @@ public class AudioFragmentAdapter extends RecyclerView.Adapter<AudioFragmentAdap
             @Override
             public boolean onLongClick(View v) {
                 String title;
-                title = dbHelper.getAudioName(position);
+                long idfordelete = audioModels.get(position).getId();
+                title = dbHelper.getAudioName(idfordelete);
                 File path = context.getDir(DIR_NAME_AUDIO, Context.MODE_PRIVATE);
                 File file = new File(path, title);
                 Uri path1 = FileProvider.getUriForFile(context, "com.example.myapplication.fileprovider", file);
@@ -79,7 +81,7 @@ public class AudioFragmentAdapter extends RecyclerView.Adapter<AudioFragmentAdap
         return audioModels.size();
     }
 
-    public int getPostion(int position) {
+    public long getPostion(int position) {
         return audioModels.get(position).getId();
     }
 

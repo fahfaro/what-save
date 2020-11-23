@@ -42,5 +42,22 @@ public class AudioFragment extends Fragment {
         audioFragmentAdapter = new AudioFragmentAdapter(view.getContext(), audioModels);
         recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
         recyclerView.setAdapter(audioFragmentAdapter);
+
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT) {
+            @Override
+            public boolean onMove(@NonNull @org.jetbrains.annotations.NotNull RecyclerView recyclerView, @NonNull @org.jetbrains.annotations.NotNull RecyclerView.ViewHolder viewHolder, @NonNull @org.jetbrains.annotations.NotNull RecyclerView.ViewHolder target) {
+                return false;
+            }
+
+            @Override
+            public void onSwiped
+                    (@NonNull @org.jetbrains.annotations.NotNull RecyclerView.ViewHolder viewHolder,
+                     int direction) {
+                dbHelper.deleteSelectedAudio(audioFragmentAdapter.getPostion(viewHolder.getAdapterPosition()));
+            }
+
+        });
+
+        itemTouchHelper.attachToRecyclerView(recyclerView);
     }
 }

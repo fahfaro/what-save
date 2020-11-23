@@ -6,6 +6,10 @@ import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.Transformation;
+import android.widget.CheckBox;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -22,6 +26,7 @@ public class ImageFragmentAdapter extends RecyclerView.Adapter<ImageFragmentAdap
     private List<ImageModel> imageModels;
     private DBHelper dbHelper;
     private static final String DIR_NAME_IMAGE = "image";
+    private ImageFragment imageFragment;
 
     public ImageFragmentAdapter(Context context, List<ImageModel> image_Models) {
         this.context = context;
@@ -39,6 +44,7 @@ public class ImageFragmentAdapter extends RecyclerView.Adapter<ImageFragmentAdap
     @Override
     public void onBindViewHolder(@NonNull @NotNull ImageFragmentAdapter.MyViewHolder holder, int position) {
         dbHelper = new DBHelper(context);
+        long idfordelete = imageModels.get(position).getId();
         String name = imageModels.get(position).getName();
         if (name != null) {
             holder.t_name.setText(name);
@@ -48,7 +54,8 @@ public class ImageFragmentAdapter extends RecyclerView.Adapter<ImageFragmentAdap
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String title = dbHelper.getImageName(position);
+                long idfordelete = imageModels.get(position).getId();
+                String title = dbHelper.getImageName(idfordelete);
                 Intent intent = new Intent(context, ViewItem.class);
                 intent.putExtra("image", title);
                 context.startActivity(intent);
@@ -58,7 +65,8 @@ public class ImageFragmentAdapter extends RecyclerView.Adapter<ImageFragmentAdap
             @Override
             public boolean onLongClick(View v) {
                 String title;
-                title = dbHelper.getImageName(position);
+                long idfordelete = imageModels.get(position).getId();
+                title = dbHelper.getImageName(idfordelete);
                 File path = context.getDir(DIR_NAME_IMAGE, Context.MODE_PRIVATE);
                 File file = new File(path, title);
                 Uri path1 = FileProvider.getUriForFile(context, "com.example.myapplication.fileprovider", file);
@@ -78,18 +86,24 @@ public class ImageFragmentAdapter extends RecyclerView.Adapter<ImageFragmentAdap
         return imageModels.size();
     }
 
-    public int getPostion(int position) {
+    public long getPostion(int position) {
         return imageModels.get(position).getId();
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
         TextView t_name;
+        CheckBox checkBox;
         View mView;
+        ImageFragment imageFragment;
+        LinearLayout linearLayout;
 
-        public MyViewHolder(@NonNull @NotNull View itemView) {
+        public MyViewHolder(@NonNull @NotNull View itemView/*, ImageFragment imageFragment*/) {
             super(itemView);
             t_name = itemView.findViewById(R.id.tv_image_name);
+            checkBox = itemView.findViewById(R.id.checkbox);
+            this.imageFragment = imageFragment;
             mView = itemView;
+            linearLayout = itemView.findViewById(R.id.linearLayout);
         }
     }
 }

@@ -47,5 +47,21 @@ public class VideoFragment extends Fragment {
         recyclerView.setAdapter(videoFragmentAdapter);
         videoFragmentAdapter.updateAdaterInsert(videoModels);
 
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
+            @Override
+            public boolean onMove(@NonNull @org.jetbrains.annotations.NotNull RecyclerView recyclerView, @NonNull @org.jetbrains.annotations.NotNull RecyclerView.ViewHolder viewHolder, @NonNull @org.jetbrains.annotations.NotNull RecyclerView.ViewHolder target) {
+                return false;
+            }
+
+            @Override
+            public void onSwiped
+                    (@NonNull @org.jetbrains.annotations.NotNull RecyclerView.ViewHolder viewHolder,
+                     int direction) {
+                    dbHelper.deleteSelectedVideo(videoFragmentAdapter.getPostion(viewHolder.getAdapterPosition()));
+            }
+        });
+
+        itemTouchHelper.attachToRecyclerView(recyclerView);
+
     }
 }

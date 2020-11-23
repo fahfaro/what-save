@@ -19,17 +19,17 @@ import java.util.List;
 
 public class PdfFragmentAdapter extends RecyclerView.Adapter<PdfFragmentAdapter.MyViewHolder> {
     private Context context;
-    private List<PdfModel> location_models;
+    private List<PdfModel> pdf_models;
     private DBHelper dbHelper;
     private static final String DIR_NAME_PDF = "pdf";
 
-    public PdfFragmentAdapter(Context context, List<PdfModel> location_models) {
+    public PdfFragmentAdapter(Context context, List<PdfModel> pdf_models) {
         this.context = context;
-        this.location_models = location_models;
+        this.pdf_models = pdf_models;
     }
 
     public void updateAdaterInsert(List<PdfModel> pdfModelList) {
-        this.location_models = pdfModelList;
+        this.pdf_models = pdfModelList;
         notifyItemInserted(pdfModelList.size());
     }
 
@@ -37,14 +37,14 @@ public class PdfFragmentAdapter extends RecyclerView.Adapter<PdfFragmentAdapter.
     @NotNull
     @Override
     public PdfFragmentAdapter.MyViewHolder onCreateViewHolder(@NonNull @NotNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.location_view, parent, false);
+        View view = LayoutInflater.from(context).inflate(R.layout.pdf_view, parent, false);
         return new MyViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull @NotNull PdfFragmentAdapter.MyViewHolder holder, int position) {
         dbHelper = new DBHelper(context);
-        String name = location_models.get(position).getName();
+        String name = pdf_models.get(position).getName();
         if (name != null) {
             holder.t_name.setText(name);
         } else {
@@ -53,7 +53,8 @@ public class PdfFragmentAdapter extends RecyclerView.Adapter<PdfFragmentAdapter.
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String title = dbHelper.getLocationName(position);
+                long idfordelete = pdf_models.get(position).getId();
+                String title = dbHelper.getPdfName(idfordelete);
                 Intent intent = new Intent(context, ViewItem.class);
                 intent.putExtra("pdf", title);
                 context.startActivity(intent);
@@ -63,7 +64,8 @@ public class PdfFragmentAdapter extends RecyclerView.Adapter<PdfFragmentAdapter.
             @Override
             public boolean onLongClick(View v) {
                 String title;
-                title = dbHelper.getLocationName(position);
+                long idfordelete = pdf_models.get(position).getId();
+                title = dbHelper.getPdfName(idfordelete);
                 File path = context.getDir(DIR_NAME_PDF, Context.MODE_PRIVATE);
                 File file = new File(path, title);
                 Uri path1 = FileProvider.getUriForFile(context, "com.example.myapplication.fileprovider", file);
@@ -71,20 +73,20 @@ public class PdfFragmentAdapter extends RecyclerView.Adapter<PdfFragmentAdapter.
                 shareIntent.setAction(Intent.ACTION_SEND);
                 shareIntent.putExtra(Intent.EXTRA_STREAM, path1);
                 shareIntent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-                shareIntent.setType("pdf/*");
+                shareIntent.setType("application/pdf");
                 context.startActivity(Intent.createChooser(shareIntent, null));
                 return false;
             }
         });
     }
 
-    public int getPostion(int position) {
-        return location_models.get(position).getId();
+    public long getPostion(int position) {
+        return pdf_models.get(position).getId();
     }
 
     @Override
     public int getItemCount() {
-        return location_models.size();
+        return pdf_models.size();
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder {

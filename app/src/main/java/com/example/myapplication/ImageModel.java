@@ -1,10 +1,10 @@
 package com.example.myapplication;
 
 public class ImageModel {
-    private int id;
+    private long id;
     private String name, title;
 
-    public ImageModel(int id, String name, String title) {
+    public ImageModel(long id, String name, String title) {
         this.id = id;
         this.name = name;
         this.title = title;
@@ -18,11 +18,11 @@ public class ImageModel {
         this.title = title;
     }
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 

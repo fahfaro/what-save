@@ -56,7 +56,8 @@ public class VideoFragmentAdapter extends RecyclerView.Adapter<VideoFragmentAdap
             @Override
             public void onClick(View v) {
                 String title;
-                title = dbHelper.getVideoName(position);
+                long idfordelete = videoModels.get(position).getId();
+                title = dbHelper.getVideoName(idfordelete);
                 Intent intent = new Intent(context, ViewItem.class);
                 intent.putExtra("video", title);
                 context.startActivity(intent);
@@ -67,7 +68,8 @@ public class VideoFragmentAdapter extends RecyclerView.Adapter<VideoFragmentAdap
             @Override
             public boolean onLongClick(View v) {
                 String title;
-                title = dbHelper.getVideoName(position);
+                long idfordelete = videoModels.get(position).getId();
+                title = dbHelper.getVideoName(idfordelete);
                 File path = context.getDir(DIR_NAME_VIDEO,Context.MODE_PRIVATE);
                 File file = new File(path, title);
                 Uri path1 = FileProvider.getUriForFile(context,"com.example.myapplication.fileprovider",file);
@@ -85,6 +87,10 @@ public class VideoFragmentAdapter extends RecyclerView.Adapter<VideoFragmentAdap
     @Override
     public int getItemCount() {
         return videoModels.size();
+    }
+
+    public long getPostion(int position) {
+        return videoModels.get(position).getId();
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder {

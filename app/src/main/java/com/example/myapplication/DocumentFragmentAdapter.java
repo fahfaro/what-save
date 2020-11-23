@@ -54,9 +54,9 @@ public class DocumentFragmentAdapter extends RecyclerView.Adapter<DocumentFragme
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String title = dbHelper.getDocumnetName(position);
+//                String title = dbHelper.getDocumnetName(position);
                 Intent intent = new Intent(context, ViewItem.class);
-                intent.putExtra("document", title);
+//                intent.putExtra("document", title);
                 context.startActivity(intent);
             }
         });
@@ -64,13 +64,13 @@ public class DocumentFragmentAdapter extends RecyclerView.Adapter<DocumentFragme
             @Override
             public boolean onLongClick(View v) {
                 String title;
-                title = dbHelper.getDocumnetName(position);
+//                title = dbHelper.getDocumnetName(position);
                 File path = context.getDir(DIR_NAME_DOCUMENT, Context.MODE_PRIVATE);
-                File file = new File(path, title);
-                Uri path1 = FileProvider.getUriForFile(context, "com.example.myapplication.fileprovider", file);
+//                File file = new File(path, title);
+//                Uri path1 = FileProvider.getUriForFile(context, "com.example.myapplication.fileprovider", file);
                 Intent shareIntent = new Intent();
                 shareIntent.setAction(Intent.ACTION_SEND);
-                shareIntent.putExtra(Intent.EXTRA_STREAM, path1);
+//                shareIntent.putExtra(Intent.EXTRA_STREAM, path1);
                 shareIntent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
                 shareIntent.setType("document/*");
                 context.startActivity(Intent.createChooser(shareIntent, null));

@@ -39,11 +39,11 @@ public class DocumentFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         recyclerView = view.findViewById(R.id.doc_recycler);
         dbHelper = new DBHelper(view.getContext());
-        List<DocumentModel> documentModels = dbHelper.getDocumentDataSql();
-        documentFragmentAdapter = new DocumentFragmentAdapter(view.getContext(), documentModels);
+//        List<DocumentModel> documentModels = dbHelper.getDocumentDataSql();
+//        documentFragmentAdapter = new DocumentFragmentAdapter(view.getContext(), documentModels);
         recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
         recyclerView.setAdapter(documentFragmentAdapter);
-        documentFragmentAdapter.updateAdaterInsert(documentModels);
+//        documentFragmentAdapter.updateAdaterInsert(documentModels);
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT) {
             @Override
             public boolean onMove(@NonNull @org.jetbrains.annotations.NotNull RecyclerView recyclerView, @NonNull @org.jetbrains.annotations.NotNull RecyclerView.ViewHolder viewHolder, @NonNull @org.jetbrains.annotations.NotNull RecyclerView.ViewHolder target) {
@@ -54,7 +54,7 @@ public class DocumentFragment extends Fragment {
             public void onSwiped
                     (@NonNull @org.jetbrains.annotations.NotNull RecyclerView.ViewHolder viewHolder,
                      int direction) {
-                dbHelper.deleteSelectedDocument(documentFragmentAdapter.getPostion(viewHolder.getAdapterPosition()));
+//                dbHelper.deleteSelectedDocument(documentFragmentAdapter.getPostion(viewHolder.getAdapterPosition()));
             }
 
         });

@@ -79,6 +79,7 @@ public class DetailsContact extends AppCompatActivity {
         }
         viewPager2 = findViewById(R.id.tabviewpager2);
         viewPager2.setAdapter(new DetailPagerAdapter(this));
+        viewPager2.setUserInputEnabled(false);
         TabLayout tabLayout = findViewById(R.id.tab_layout);
         TabLayoutMediator tabLayoutMediator = new TabLayoutMediator(tabLayout, viewPager2, new TabLayoutMediator.TabConfigurationStrategy() {
             @Override
@@ -166,44 +167,41 @@ public class DetailsContact extends AppCompatActivity {
         }
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.detail_menu, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle item selection
-        switch (item.getItemId()) {
-            case R.id.edit:
-                edit();
-                return true;
-            case R.id.delete:
-                delete();
-                return true;
-            case R.id.detail:
-                detail();
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-    }
+//    @Override
+//    public boolean onCreateOptionsMenu(Menu menu) {
+//        MenuInflater inflater = getMenuInflater();
+//        inflater.inflate(R.menu.detail_menu, menu);
+//        return true;
+//    }
+//
+//    @Override
+//    public boolean onOptionsItemSelected(MenuItem item) {
+//        // Handle item selection
+//        switch (item.getItemId()) {
+//            case R.id.edit:
+//                edit();
+//                return true;
+//            case R.id.delete:
+//                delete();
+//                return true;
+//            case R.id.detail:
+//                detail();
+//                return true;
+//            default:
+//                return super.onOptionsItemSelected(item);
+//        }
+//    }
 
     private void detail() {
-        Intent intent = new Intent(this, ViewItem.class);
-        startActivity(intent);
+
     }
 
     private void delete() {
-        Intent intent = new Intent(this, ViewItem.class);
-        startActivity(intent);
+
     }
 
     private void edit() {
-        Intent intent = new Intent(this, ViewItem.class);
-        startActivity(intent);
+        
     }
 
     private void handleAudio(Intent intent) {

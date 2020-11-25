@@ -13,6 +13,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.myapplication.adapters.DetailPagerAdapter;
 import com.example.myapplication.data.DBHelper;
 import com.example.myapplication.R;
 import com.google.android.material.tabs.TabLayout;

@@ -1,10 +1,11 @@
-package com.example.myapplication;
+package com.example.myapplication.models;
 
-public class ImageModel {
+public class PdfModel {
     private long id;
-    private String name, title;
+    private String name;
+    private String title;
 
-    public ImageModel(long id, String name, String title) {
+    public PdfModel(long id, String name, String title) {
         this.id = id;
         this.name = name;
         this.title = title;

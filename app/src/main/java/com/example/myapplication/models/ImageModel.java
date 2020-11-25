@@ -1,10 +1,10 @@
-package com.example.myapplication;
+package com.example.myapplication.models;
 
-public class DocumentModel {
-    private int id;
+public class ImageModel {
+    private long id;
     private String name, title;
 
-    public DocumentModel(int id, String name, String title) {
+    public ImageModel(long id, String name, String title) {
         this.id = id;
         this.name = name;
         this.title = title;
@@ -18,11 +18,11 @@ public class DocumentModel {
         this.title = title;
     }
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 

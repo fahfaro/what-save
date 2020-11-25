@@ -1,48 +1,32 @@
-package com.example.myapplication;
+package com.example.myapplication.activities;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager2.widget.ViewPager2;
 
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.myapplication.data.DBHelper;
+import com.example.myapplication.R;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 
-import org.jetbrains.annotations.NotNull;
-
 import java.io.BufferedOutputStream;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.List;
-
-import static android.icu.util.ULocale.getName;
+import java.util.Objects;
 
 public class DetailsContact extends AppCompatActivity {
-    private String textdata;
-    private ViewPager2 viewPager2;
     private static final String DIR_NAME_PDF = "pdf";
     private static final String DIR_NAME_IMAGE = "images";
     private static final String DIR_NAME_AUDIO = "audio";
@@ -53,7 +37,7 @@ public class DetailsContact extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_details_contact);
-        getSupportActionBar().setTitle("WhatsSave");
+        Objects.requireNonNull(getSupportActionBar()).setTitle("WhatsSave");
         dbHelper = new DBHelper(this);
         Intent intent = getIntent();
         if (intent != null) {
@@ -77,35 +61,32 @@ public class DetailsContact extends AppCompatActivity {
                 }
             }
         }
-        viewPager2 = findViewById(R.id.tabviewpager2);
+        ViewPager2 viewPager2 = findViewById(R.id.tabviewpager2);
         viewPager2.setAdapter(new DetailPagerAdapter(this));
         viewPager2.setUserInputEnabled(false);
         TabLayout tabLayout = findViewById(R.id.tab_layout);
-        TabLayoutMediator tabLayoutMediator = new TabLayoutMediator(tabLayout, viewPager2, new TabLayoutMediator.TabConfigurationStrategy() {
-            @Override
-            public void onConfigureTab(@NonNull @NotNull TabLayout.Tab tab, int position) {
-                switch (position) {
-                    case 0: {
-                        tab.setIcon(R.drawable.ic_pdf);
-                        break;
-                    }
-                    case 1: {
-                        tab.setIcon(R.drawable.ic_image);
-                        break;
-                    }
-                    case 2: {
-                        tab.setIcon(R.drawable.ic_audio);
-                        break;
-                    }
-                    case 3: {
-                        tab.setIcon(R.drawable.ic_video);
-                        break;
-                    }
+        TabLayoutMediator tabLayoutMediator = new TabLayoutMediator(tabLayout, viewPager2, (tab, position) -> {
+            switch (position) {
+                case 0: {
+                    tab.setIcon(R.drawable.ic_pdf);
+                    break;
+                }
+                case 1: {
+                    tab.setIcon(R.drawable.ic_image);
+                    break;
+                }
+                case 2: {
+                    tab.setIcon(R.drawable.ic_audio);
+                    break;
+                }
+                case 3: {
+                    tab.setIcon(R.drawable.ic_video);
+                    break;
+                }
 //                    case 4: {
 //                        tab.setIcon(R.drawable.ic_document);
 //                        break;
 //                    }
-                }
             }
         });
         tabLayoutMediator.attach();
@@ -133,19 +114,16 @@ public class DetailsContact extends AppCompatActivity {
                 final View customLayout = getLayoutInflater().inflate(R.layout.custom_layout, null);
                 builder.setView(customLayout);
                 EditText editText1 = customLayout.findViewById(R.id.editText1);
-                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        long id = System.currentTimeMillis();
-                        name[0] = editText1.getText().toString();
-                        if (name[0].compareTo("") == 0) {
-                            Toast.makeText(getApplicationContext(),
-                                    "missing", Toast.LENGTH_SHORT).show();
-                        } else {
-                            dbHelper.insertVideoData(id, name[0], videoname);
-                        }
+                builder.setPositiveButton("OK", (dialog, which) -> {
+                    long id = System.currentTimeMillis();
+                    name[0] = editText1.getText().toString();
+                    if (name[0].compareTo("") == 0) {
+                        Toast.makeText(getApplicationContext(),
+                                "missing", Toast.LENGTH_SHORT).show();
+                    } else {
+                        dbHelper.insertVideoData(id, name[0], videoname);
                     }
-                });
+                }).setCancelable(false);
                 AlertDialog dialog = builder.create();
                 dialog.show();
                 byte[] buf = new byte[1024];
@@ -191,18 +169,18 @@ public class DetailsContact extends AppCompatActivity {
 //                return super.onOptionsItemSelected(item);
 //        }
 //    }
-
-    private void detail() {
-
-    }
-
-    private void delete() {
-
-    }
-
-    private void edit() {
-        
-    }
+//
+//    private void detail() {
+//
+//    }
+//
+//    private void delete() {
+//
+//    }
+//
+//    private void edit() {
+//
+//    }
 
     private void handleAudio(Intent intent) {
         String audioName = null;
@@ -238,7 +216,7 @@ public class DetailsContact extends AppCompatActivity {
                             dbHelper.insertAudioData(id, name[0], audioname);
                         }
                     }
-                });
+                }).setCancelable(false);
                 AlertDialog dialog = builder.create();
                 dialog.show();
                 byte[] buf = new byte[1024];
@@ -295,7 +273,7 @@ public class DetailsContact extends AppCompatActivity {
                             dbHelper.insertPdfData(id, name[0], pdfname);
                         }
                     }
-                });
+                }).setCancelable(false);
                 AlertDialog dialog = builder.create();
                 dialog.show();
                 byte[] buf = new byte[1024];
@@ -354,7 +332,7 @@ public class DetailsContact extends AppCompatActivity {
                             dbHelper.insertImageData(id, name[0], imagename);
                         }
                     }
-                });
+                }).setCancelable(false);
                 AlertDialog dialog = builder.create();
                 dialog.show();
                 byte[] buf = new byte[1024];
@@ -376,9 +354,9 @@ public class DetailsContact extends AppCompatActivity {
     }
 
     private void handleTextData(Intent intent) {
-        textdata = intent.getStringExtra(Intent.EXTRA_TEXT);
-        if (textdata != null) {
-        }
+        String textdata = intent.getStringExtra(Intent.EXTRA_TEXT);
+//        if (textdata != null) {
+//        }
     }
 
     private void handleMultipleImage(Intent intent) {

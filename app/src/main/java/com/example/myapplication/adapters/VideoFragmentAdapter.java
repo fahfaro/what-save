@@ -1,33 +1,37 @@
-package com.example.myapplication;
+package com.example.myapplication.adapters;
 
 import android.content.Context;
-import android.content.Intent;
-import android.net.Uri;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.core.content.FileProvider;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.bumptech.glide.Glide;
+import com.example.myapplication.R;
+import com.example.myapplication.models.VideoModel;
+import com.example.myapplication.data.DBHelper;
+import com.example.myapplication.interfaces.ClickInterface;
 
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
-import java.net.URI;
 import java.util.List;
 
 public class VideoFragmentAdapter extends RecyclerView.Adapter<VideoFragmentAdapter.MyViewHolder> {
     private Context context;
     private List<VideoModel> videoModels;
     private DBHelper dbHelper;
+    private ClickInterface clickInterface;
     private static final String DIR_NAME_VIDEO = "video";
 
-    public VideoFragmentAdapter(Context context, List<VideoModel> videoModels) {
+    public VideoFragmentAdapter(Context context, List<VideoModel> videoModels, ClickInterface clickInterface) {
         this.context = context;
         this.videoModels = videoModels;
+        this.clickInterface = clickInterface;
     }
 
     public void updateAdaterInsert(List<VideoModel> videoModelList) {
@@ -46,42 +50,16 @@ public class VideoFragmentAdapter extends RecyclerView.Adapter<VideoFragmentAdap
     @Override
     public void onBindViewHolder(@NonNull @NotNull VideoFragmentAdapter.MyViewHolder holder, int position) {
         final String[] name = {videoModels.get(position).getName()};
+        String title = videoModels.get(position).getTitle();
         dbHelper = new DBHelper(context);
+        File path = context.getDir(DIR_NAME_VIDEO, context.MODE_PRIVATE);
+        File file = new File(path, title);
+        Glide.with(context).load(file).thumbnail(0.1f).into(holder.thumbnail);
         if (name[0] != null) {
             holder.t_name.setText(name[0]);
         } else {
             holder.t_name.setText("Empty");
         }
-        holder.mView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String title;
-                long idfordelete = videoModels.get(position).getId();
-                title = dbHelper.getVideoName(idfordelete);
-                Intent intent = new Intent(context, ViewItem.class);
-                intent.putExtra("video", title);
-                context.startActivity(intent);
-
-            }
-        });
-        holder.mView.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-                String title;
-                long idfordelete = videoModels.get(position).getId();
-                title = dbHelper.getVideoName(idfordelete);
-                File path = context.getDir(DIR_NAME_VIDEO,Context.MODE_PRIVATE);
-                File file = new File(path, title);
-                Uri path1 = FileProvider.getUriForFile(context,"com.example.myapplication.fileprovider",file);
-                Intent shareIntent = new Intent();
-                shareIntent.setAction(Intent.ACTION_SEND);
-                shareIntent.putExtra(Intent.EXTRA_STREAM, path1);
-                shareIntent.setFlags( Intent.FLAG_GRANT_READ_URI_PERMISSION);
-                shareIntent.setType("video/*");
-                context.startActivity(Intent.createChooser(shareIntent, null));
-                return false;
-            }
-        });
     }
 
     @Override
@@ -94,14 +72,26 @@ public class VideoFragmentAdapter extends RecyclerView.Adapter<VideoFragmentAdap
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
-
         TextView t_name;
-        View mView;
+        ImageView thumbnail;
 
         public MyViewHolder(@NonNull @NotNull View itemView) {
             super(itemView);
             t_name = itemView.findViewById(R.id.tv_video_name);
-            mView = itemView;
+            thumbnail = itemView.findViewById(R.id.thumbnail);
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    clickInterface.onItemClick(getAdapterPosition());
+                }
+            });
+            itemView.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    clickInterface.onLongItemClick(getAdapterPosition());
+                    return true;
+                }
+            });
         }
     }
 }

@@ -9,8 +9,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.MyApplication">
-        <activity android:name=".ViewItem"></activity>
-        <activity android:name=".DetailsContact">
+        <activity android:name=".activities.ViewItem"
+            android:parentActivityName=".activities.DetailsContact"></activity>
+        <activity android:name=".activities.DetailsContact">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

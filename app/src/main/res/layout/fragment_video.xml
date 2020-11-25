@@ -2,10 +2,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    tools:context=".VideoFragment">
+    tools:context=".fragments.VideoFragment">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/vid_recycler"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        tools:listitem="@layout/video_view" />
 </FrameLayout>

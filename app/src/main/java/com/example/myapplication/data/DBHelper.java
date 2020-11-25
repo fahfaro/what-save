@@ -1,11 +1,17 @@
-package com.example.myapplication;
+package com.example.myapplication.data;
 
+import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import androidx.annotation.Nullable;
+
+import com.example.myapplication.models.AudioModel;
+import com.example.myapplication.models.ImageModel;
+import com.example.myapplication.models.PdfModel;
+import com.example.myapplication.models.VideoModel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -82,9 +88,9 @@ public class DBHelper extends SQLiteOpenHelper {
 //    }
 
     public List<PdfModel> getPdfDataSql() {
-        List<PdfModel> pdf_list = new ArrayList<PdfModel>();
+        List<PdfModel> pdf_list = new ArrayList<>();
         db = getReadableDatabase();
-        Cursor cursor = db.rawQuery(DBSchema.SQL_SELECT_ALL_PDF, new String[]{});
+        @SuppressLint("Recycle") Cursor cursor = db.rawQuery(DBSchema.SQL_SELECT_ALL_PDF, new String[]{});
         if (cursor != null) {
             for (cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext()) {
                 long id = cursor.getLong(0);
@@ -98,9 +104,9 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
     public List<ImageModel> getImageDataSql() {
-        List<ImageModel> image_list = new ArrayList<ImageModel>();
+        List<ImageModel> image_list = new ArrayList<>();
         db = getReadableDatabase();
-        Cursor cursor = db.rawQuery(DBSchema.SQL_SELECT_ALL_IMAGE, new String[]{});
+        @SuppressLint("Recycle") Cursor cursor = db.rawQuery(DBSchema.SQL_SELECT_ALL_IMAGE, new String[]{});
         if (cursor != null) {
             for (cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext()) {
                 long id = cursor.getLong(0);
@@ -114,9 +120,9 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
     public List<AudioModel> getAudioDataSql() {
-        List<AudioModel> audio_list = new ArrayList<AudioModel>();
+        List<AudioModel> audio_list = new ArrayList<>();
         db = getReadableDatabase();
-        Cursor cursor = db.rawQuery(DBSchema.SQL_SELECT_ALL_AUDIO, new String[]{});
+        @SuppressLint("Recycle") Cursor cursor = db.rawQuery(DBSchema.SQL_SELECT_ALL_AUDIO, new String[]{});
         if (cursor != null) {
             for (cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext()) {
                 long id = cursor.getLong(0);
@@ -130,9 +136,9 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
     public List<VideoModel> getVideoDataSql() {
-        List<VideoModel> video_list = new ArrayList<VideoModel>();
+        List<VideoModel> video_list = new ArrayList<>();
         db = getReadableDatabase();
-        Cursor cursor = db.rawQuery(DBSchema.SQL_SELECT_ALL_VIDEO, new String[]{});
+        @SuppressLint("Recycle") Cursor cursor = db.rawQuery(DBSchema.SQL_SELECT_ALL_VIDEO, new String[]{});
         if (cursor != null) {
             for (cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext()) {
                 long id = cursor.getLong(0);
@@ -194,7 +200,7 @@ public class DBHelper extends SQLiteOpenHelper {
     public String getPdfName(long id) {
         db = getWritableDatabase();
         String title = null;
-        Cursor cursor = db.rawQuery(DBSchema.SQL_SELECT_PDF_BY_ID + id, new String[]{});
+        @SuppressLint("Recycle") Cursor cursor = db.rawQuery(DBSchema.SQL_SELECT_PDF_BY_ID + id, new String[]{});
         if (cursor != null) {
             for (cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext()) {
                 title = cursor.getString(2);
@@ -207,7 +213,7 @@ public class DBHelper extends SQLiteOpenHelper {
     public String getImageName(long id) {
         db = getWritableDatabase();
         String title = null;
-        Cursor cursor = db.rawQuery(DBSchema.SQL_SELECT_IMAGE_BY_ID + id, new String[]{});
+        @SuppressLint("Recycle") Cursor cursor = db.rawQuery(DBSchema.SQL_SELECT_IMAGE_BY_ID + id, new String[]{});
         if (cursor != null) {
             for (cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext()) {
                 title = cursor.getString(2);
@@ -220,7 +226,7 @@ public class DBHelper extends SQLiteOpenHelper {
     public String getAudioName(long id) {
         db = getWritableDatabase();
         String title = null;
-        Cursor cursor = db.rawQuery(DBSchema.SQL_SELECT_AUDIO_BY_ID + id, new String[]{});
+        @SuppressLint("Recycle") Cursor cursor = db.rawQuery(DBSchema.SQL_SELECT_AUDIO_BY_ID + id, new String[]{});
         if (cursor != null) {
             for (cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext()) {
                 title = cursor.getString(2);
@@ -233,7 +239,7 @@ public class DBHelper extends SQLiteOpenHelper {
     public String getVideoName(long id) {
         db = getWritableDatabase();
         String title = null;
-        Cursor cursor = db.rawQuery(DBSchema.SQL_SELECT_VIDEO_BY_ID + id, new String[]{});
+        @SuppressLint("Recycle") Cursor cursor = db.rawQuery(DBSchema.SQL_SELECT_VIDEO_BY_ID + id, new String[]{});
         if (cursor != null) {
             for (cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext()) {
                 title = cursor.getString(2);

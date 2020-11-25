@@ -1,40 +1,33 @@
-package com.example.myapplication;
+package com.example.myapplication.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.PowerManager;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.MediaController;
 import android.widget.Toast;
 import android.widget.VideoView;
 
+import com.bumptech.glide.Glide;
+import com.example.myapplication.R;
+
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
+import java.util.Objects;
 
 public class ViewItem extends AppCompatActivity {
     private Button btnBack, btnPlay, btnStop;
-    private String titleLocation, titleImage, titleAudio, titleVideo, titleDocument;
     private VideoView videoView;
     private ImageView mImageView;
     private MediaPlayer mPlayer;
     private static final String DIR_NAME_IMAGE = "images";
     private static final String DIR_NAME_AUDIO = "audio";
     private static final String DIR_NAME_VIDEO = "video";
-    private PowerManager.WakeLock wl;
+//    private PowerManager.WakeLock wl;
     private int count = 0;
     private File file;
 
@@ -42,38 +35,44 @@ public class ViewItem extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_item);
+//        String titleLocation;
+        String titleImage;
+        String titleAudio;
+//        String titleDocument;
         init();
         Intent intent = getIntent();
-        titleLocation = intent.getStringExtra("pdf");
+//        titleLocation = intent.getStringExtra("pdf");
         titleImage = intent.getStringExtra("image");
         titleAudio = intent.getStringExtra("audio");
-        titleVideo = intent.getStringExtra("video");
-        titleDocument = intent.getStringExtra("document");
-        if (titleLocation != null) {
-        } else if (titleImage != null) {
+        String titleVideo = intent.getStringExtra("video");
+//        titleDocument = intent.getStringExtra("document");
+        /*if (titleLocation != null) {
+        } else*/ if (titleImage != null) {
             showImage(titleImage);
         } else if (titleAudio != null) {
             playAudio(titleAudio);
         } else if (titleVideo != null) {
             playVideo(titleVideo);
-        } else if (titleDocument != null) {
+        } /*else if (titleDocument != null) {
 
-        }
+        }*/
+    }
+
+    @Override
+    protected void onDestroy() {
+        if (count == 1){mPlayer.stop();}
+        super.onDestroy();
     }
 
     private void showImage(String title) {
-        getSupportActionBar().setTitle("WhatsSave");
+        Objects.requireNonNull(getSupportActionBar()).setTitle("WhatsSave");
         mImageView.setVisibility(View.VISIBLE);
-        Bitmap image = null;
         File path = getDir(DIR_NAME_IMAGE, MODE_PRIVATE);
         File file = new File(path, title);
-        InputStream inputStream = null;
         if (file.exists()) {
             try {
-                inputStream = new FileInputStream(file);
-                image = BitmapFactory.decodeStream(inputStream);
-                mImageView.setImageBitmap(image);
-            } catch (FileNotFoundException e) {
+                Glide.with(this).load(file).into(mImageView);
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         } else {
@@ -82,7 +81,7 @@ public class ViewItem extends AppCompatActivity {
     }
 
     private void playAudio(String title) {
-        getSupportActionBar().setTitle("WhatsSave");
+        Objects.requireNonNull(getSupportActionBar()).setTitle("WhatsSave");
         btnBack.setVisibility(View.VISIBLE);
         btnPlay.setVisibility(View.VISIBLE);
         btnStop.setVisibility(View.VISIBLE);
@@ -109,13 +108,14 @@ public class ViewItem extends AppCompatActivity {
     }
 
     private void backParent(View view) {
+        mPlayer.stop();
         Intent intent = new Intent(this, DetailsContact.class);
         startActivity(intent);
     }
 
     private void playpause() {
         if (count < 0) {
-            count ++;
+            count++;
             mPlayer = MediaPlayer.create(this, Uri.fromFile(file));
             mPlayer.setLooping(true);
             mPlayer.start();
@@ -135,22 +135,17 @@ public class ViewItem extends AppCompatActivity {
 
     private void stopPlay(View view) {
         mPlayer.stop();
-        count --;
+        count--;
     }
 
     private void playVideo(String title) {
-        getSupportActionBar().hide();
+//        getSupportActionBar().hide();
         videoView.setVisibility(View.VISIBLE);
         File path = getDir(DIR_NAME_VIDEO, MODE_PRIVATE);
         File file = new File(path, title);
         if (file.exists()) {
             MediaController mediaController = new MediaController(this);
-            videoView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
-                @Override
-                public void onPrepared(MediaPlayer mp) {
-                    mediaController.setAnchorView(videoView);
-                }
-            });
+            videoView.setOnPreparedListener(mp -> mediaController.setAnchorView(videoView));
             videoView.setMediaController(mediaController);
             videoView.setVideoPath(String.valueOf(file));
             videoView.start();

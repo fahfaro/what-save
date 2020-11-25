@@ -1,4 +1,4 @@
-package com.example.myapplication;
+package com.example.myapplication.data;
 
 public class DBSchema {
     public static final String DATABASE_NAME = "whatsaver.db";
@@ -20,14 +20,14 @@ public class DBSchema {
     public static final String SQL_CREATE_VIDEO = "CREATE TABLE " + VIDEO_TABLE_NAME + "(" + COLUMN_ID + " INTEGER PRIMARY KEY UNIQUE NOT NULL," + COLUMN_NAME + " TEXT NOT NULL," + COLUMN_TITLE + " TEXT NOT NULL);";
 //    public static final String SQL_CREATE_DOCUMENT = "CREATE TABLE " + DOC_TABLE_NAME + "(" + COLUMN_ID + " INTEGER PRIMARY KEY UNIQUE NOT NULL," + COLUMN_NAME + " TEXT NOT NULL," + COLUMN_TITLE + " TEXT NOT NULL);";
 
-    public static final String SQL_DELETE = " DROP TABLE IF EXISTS " + PDF_TABLE_NAME;
+//    public static final String SQL_DELETE = " DROP TABLE IF EXISTS " + PDF_TABLE_NAME;
     public static final String SQL_DELETE_SELECTED_PDF = "delete from " + PDF_TABLE_NAME + " where " + COLUMN_ID + " = ";
     public static final String SQL_DELETE_SELECTED_IMAGE = "delete from " + IMAGE_TABLE_NAME + " where " + COLUMN_ID + " = ";
     public static final String SQL_DELETE_SELECTED_AUDIO = "delete from " + AUDIO_TABLE_NAME + " where " + COLUMN_ID + " = ";
     public static final String SQL_DELETE_SELECTED_VIDEO = "delete from " + VIDEO_TABLE_NAME + " where " + COLUMN_ID + " = ";
 //    public static final String SQL_DELETE_SELECTED_DOCUMENT = "delete from " + DOC_TABLE_NAME + " where " + COLUMN_ID + " = ";
 
-    public static final String SQL_UPDATE = "SELECT * from " + PDF_TABLE_NAME + " where " + COLUMN_ID + " = ";
+//    public static final String SQL_UPDATE = "SELECT * from " + PDF_TABLE_NAME + " where " + COLUMN_ID + " = ";
 
     public static final String SQL_SELECT_ALL_PDF = "SELECT * FROM " + PDF_TABLE_NAME;
     public static final String SQL_SELECT_ALL_IMAGE = "SELECT * FROM " + IMAGE_TABLE_NAME;

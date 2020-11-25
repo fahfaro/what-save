@@ -1,11 +1,10 @@
-package com.example.myapplication;
+package com.example.myapplication.models;
 
-public class PdfModel {
+public class VideoModel {
     private long id;
-    private String name;
-    private String title;
+    private String name, title;
 
-    public PdfModel(long id, String name, String title) {
+    public VideoModel(long id, String name, String title) {
         this.id = id;
         this.name = name;
         this.title = title;

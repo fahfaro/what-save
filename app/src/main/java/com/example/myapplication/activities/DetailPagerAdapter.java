@@ -1,9 +1,13 @@
-package com.example.myapplication;
+package com.example.myapplication.activities;
 
 import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
+
+import com.example.myapplication.fragments.AudioFragment;
+import com.example.myapplication.fragments.ImageFragment;
+import com.example.myapplication.fragments.PdfFragment;
+import com.example.myapplication.fragments.VideoFragment;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -15,7 +19,7 @@ public class DetailPagerAdapter extends FragmentStateAdapter {
 
     @NotNull
     @Override
-    public Fragment createFragment(int position) {
+    public androidx.fragment.app.Fragment createFragment(int position) {
         switch (position) {
             case 0: {
                 return new PdfFragment();
@@ -26,11 +30,11 @@ public class DetailPagerAdapter extends FragmentStateAdapter {
             case 2: {
                 return new AudioFragment();
             }
-            case 3: {
+            default: {
                 return new VideoFragment();
             }
-            default:
-                return new DocumentFragment();
+//            default:
+//                return new DocumentFragment();
         }
     }
 

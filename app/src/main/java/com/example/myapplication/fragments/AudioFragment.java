@@ -16,23 +16,24 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.myapplication.activities.AudioPlayer;
+import com.example.myapplication.helper.Constants;
 import com.example.myapplication.adapters.AudioFragmentAdapter;
 import com.example.myapplication.models.AudioModel;
 import com.example.myapplication.R;
 import com.example.myapplication.interfaces.ClickInterface;
-import com.example.myapplication.activities.ViewItem;
 import com.example.myapplication.data.DBHelper;
 
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
 public class AudioFragment extends Fragment implements ClickInterface {
     private DBHelper dbHelper;
     List<AudioModel> audioModels;
-    private static final String DIR_NAME_AUDIO = "audio";
 
     public AudioFragment() {
         // Required empty public constructor
@@ -81,8 +82,10 @@ public class AudioFragment extends Fragment implements ClickInterface {
         String title;
         long idfordelete = audioModels.get(position).getId();
         title = dbHelper.getAudioName(idfordelete);
-        Intent intent = new Intent(getContext(), ViewItem.class);
-        intent.putExtra("audio", title);
+        File path = Objects.requireNonNull(getContext()).getDir(Constants.DIR_NAME_AUDIO, Context.MODE_PRIVATE);
+        File file = new File(path, title);
+        Intent intent = new Intent(getContext(), AudioPlayer.class);
+        intent.putExtra("position",position);
         startActivity(intent);
     }
 
@@ -91,7 +94,7 @@ public class AudioFragment extends Fragment implements ClickInterface {
         String title;
         long idfordelete = audioModels.get(position).getId();
         title = dbHelper.getAudioName(idfordelete);
-        File path = Objects.requireNonNull(getContext()).getDir(DIR_NAME_AUDIO, Context.MODE_PRIVATE);
+        File path = Objects.requireNonNull(getContext()).getDir(Constants.DIR_NAME_AUDIO, Context.MODE_PRIVATE);
         File file = new File(path, title);
         Uri path1 = FileProvider.getUriForFile(getContext(), "com.example.myapplication.fileprovider", file);
         Intent shareIntent = new Intent();
@@ -100,5 +103,23 @@ public class AudioFragment extends Fragment implements ClickInterface {
         shareIntent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
         shareIntent.setType("audio/*");
         startActivity(Intent.createChooser(shareIntent, null));
+    }
+
+    private ArrayList<File> findMusicFiles(File file) {
+        ArrayList<File> musicfileobject = new ArrayList<>();
+        File[] files = file.listFiles();
+
+        for (File currentFiles : files) {
+
+            if (currentFiles.isDirectory() && !currentFiles.isHidden()) {
+                musicfileobject.addAll(findMusicFiles(currentFiles));
+            } else {
+                if (currentFiles.getName().endsWith(".mp3") || currentFiles.getName().endsWith(".mp4a") || currentFiles.getName().endsWith(".wav")) {
+                    musicfileobject.add(currentFiles);
+                }
+            }
+        }
+
+        return musicfileobject;
     }
 }

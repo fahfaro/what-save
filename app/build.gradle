@@ -44,4 +44,6 @@ dependencies {
 //    RecyclerViewSwipeDecorator Dependency
     implementation 'it.xabaras.android:recyclerview-swipedecorator:1.2.3'
 
+//    Player Dependency
+    implementation 'com.karumi:dexter:6.2.1'
 }

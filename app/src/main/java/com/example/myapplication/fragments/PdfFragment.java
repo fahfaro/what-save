@@ -16,6 +16,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.myapplication.helper.Constants;
 import com.example.myapplication.interfaces.ClickInterface;
 import com.example.myapplication.data.DBHelper;
 import com.example.myapplication.adapters.PdfFragmentAdapter;
@@ -31,8 +32,6 @@ import java.util.Objects;
 public class PdfFragment extends Fragment implements ClickInterface {
     private DBHelper dbHelper;
     private List<PdfModel> pdfModels;
-    private static final String DIR_NAME_PDF = "pdf";
-
     public PdfFragment() {
     }
 
@@ -91,7 +90,7 @@ public class PdfFragment extends Fragment implements ClickInterface {
         String title;
         long idfordelete = pdfModels.get(position).getId();
         title = dbHelper.getPdfName(idfordelete);
-        File path = Objects.requireNonNull(getContext()).getDir(DIR_NAME_PDF, Context.MODE_PRIVATE);
+        File path = Objects.requireNonNull(getContext()).getDir(Constants.DIR_NAME_PDF, Context.MODE_PRIVATE);
         File file = new File(path, title);
         Uri path1 = FileProvider.getUriForFile(getContext(), "com.example.myapplication.fileprovider", file);
         Intent shareIntent = new Intent();

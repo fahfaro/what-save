@@ -18,6 +18,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.example.myapplication.helper.Constants;
 import com.example.myapplication.interfaces.ClickInterface;
 import com.example.myapplication.data.DBHelper;
 import com.example.myapplication.R;
@@ -35,8 +36,6 @@ public class VideoFragment extends Fragment implements ClickInterface {
     private VideoFragmentAdapter videoFragmentAdapter;
     private DBHelper dbHelper;
     private List<VideoModel> videoModels;
-    private static final String DIR_NAME_VIDEO = "video";
-
     public VideoFragment() {
         // Required empty public constructor
     }
@@ -132,7 +131,7 @@ public class VideoFragment extends Fragment implements ClickInterface {
         String title;
         long idfordelete = videoModels.get(position).getId();
         title = dbHelper.getVideoName(idfordelete);
-        File path = getContext().getDir(DIR_NAME_VIDEO, Context.MODE_PRIVATE);
+        File path = getContext().getDir(Constants.DIR_NAME_VIDEO, Context.MODE_PRIVATE);
         File file = new File(path, title);
         Uri path1 = FileProvider.getUriForFile(getContext(), "com.example.myapplication.fileprovider", file);
         Intent shareIntent = new Intent();

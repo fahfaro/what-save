@@ -15,6 +15,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.myapplication.helper.Constants;
 import com.example.myapplication.interfaces.ClickInterface;
 import com.example.myapplication.data.DBHelper;
 import com.example.myapplication.adapters.ImageFragmentAdapter;
@@ -36,8 +37,6 @@ public class ImageFragment extends androidx.fragment.app.Fragment implements Cli
     private RecyclerView recyclerView;
     private ImageFragmentAdapter imageFragmentAdapter;
     private SwipeRefreshLayout swipeRefreshLayout;
-    private static final String DIR_NAME_IMAGE = "image";
-
     public ImageFragment() {
         // Required empty public constructor
     }
@@ -56,7 +55,7 @@ public class ImageFragment extends androidx.fragment.app.Fragment implements Cli
         dbHelper = new DBHelper(view.getContext());
         swipeRefreshLayout = view.findViewById(R.id.swipe_refreshlayout_image);
         imageModels = dbHelper.getImageDataSql();
-        imageFragmentAdapter = new ImageFragmentAdapter(view.getContext(), imageModels, this);
+        imageFragmentAdapter = new ImageFragmentAdapter(imageModels, this);
         recyclerView.setLayoutManager(new GridLayoutManager(view.getContext(), 4));
         recyclerView.setAdapter(imageFragmentAdapter);
 //        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT) {
@@ -99,7 +98,7 @@ public class ImageFragment extends androidx.fragment.app.Fragment implements Cli
         String title;
         long idfordelete = imageModels.get(position).getId();
         title = dbHelper.getImageName(idfordelete);
-        File path = getContext().getDir(DIR_NAME_IMAGE, MODE_PRIVATE);
+        File path = getContext().getDir(Constants.DIR_NAME_IMAGE, MODE_PRIVATE);
         File file = new File(path, title);
         Uri path1 = FileProvider.getUriForFile(getContext(), "com.example.myapplication.fileprovider", file);
         Intent shareIntent = new Intent();

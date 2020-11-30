@@ -18,21 +18,21 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.example.myapplication.activities.VideoPlayer;
 import com.example.myapplication.helper.Constants;
 import com.example.myapplication.interfaces.ClickInterface;
 import com.example.myapplication.data.DBHelper;
 import com.example.myapplication.R;
 import com.example.myapplication.adapters.VideoFragmentAdapter;
 import com.example.myapplication.models.VideoModel;
-import com.example.myapplication.activities.ViewItem;
 
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.util.List;
+import java.util.Objects;
 
 public class VideoFragment extends Fragment implements ClickInterface {
-    private RecyclerView recyclerView;
     private VideoFragmentAdapter videoFragmentAdapter;
     private DBHelper dbHelper;
     private List<VideoModel> videoModels;
@@ -50,12 +50,12 @@ public class VideoFragment extends Fragment implements ClickInterface {
     @Override
     public void onViewCreated(@NonNull @NotNull View view, @Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        recyclerView = view.findViewById(R.id.vid_recycler);
+        RecyclerView recyclerView = view.findViewById(R.id.vid_recycler);
         dbHelper = new DBHelper(view.getContext());
 
         videoModels = dbHelper.getVideoDataSql();
         videoFragmentAdapter = new VideoFragmentAdapter(view.getContext(), videoModels, this);
-        recyclerView.setLayoutManager(new GridLayoutManager(view.getContext(), 3));
+        recyclerView.setLayoutManager(new GridLayoutManager(view.getContext(), 4));
         recyclerView.setAdapter(videoFragmentAdapter);
         videoFragmentAdapter.updateAdaterInsert(videoModels);
 //        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(view.getContext(), DividerItemDecoration.HORIZONTAL);
@@ -78,7 +78,6 @@ public class VideoFragment extends Fragment implements ClickInterface {
         @Override
         public void onSwiped
                 (@NonNull @org.jetbrains.annotations.NotNull RecyclerView.ViewHolder viewHolder, int direction) {
-            int position = viewHolder.getAdapterPosition();
 
             switch (direction) {
                 case ItemTouchHelper.LEFT:
@@ -121,7 +120,7 @@ public class VideoFragment extends Fragment implements ClickInterface {
         String title;
         long idfordelete = videoModels.get(position).getId();
         title = dbHelper.getVideoName(idfordelete);
-        Intent intent = new Intent(getContext(), ViewItem.class);
+        Intent intent = new Intent(getContext(), VideoPlayer.class);
         intent.putExtra("video", title);
         startActivity(intent);
     }
@@ -131,7 +130,7 @@ public class VideoFragment extends Fragment implements ClickInterface {
         String title;
         long idfordelete = videoModels.get(position).getId();
         title = dbHelper.getVideoName(idfordelete);
-        File path = getContext().getDir(Constants.DIR_NAME_VIDEO, Context.MODE_PRIVATE);
+        File path = Objects.requireNonNull(getContext()).getDir(Constants.DIR_NAME_VIDEO, Context.MODE_PRIVATE);
         File file = new File(path, title);
         Uri path1 = FileProvider.getUriForFile(getContext(), "com.example.myapplication.fileprovider", file);
         Intent shareIntent = new Intent();

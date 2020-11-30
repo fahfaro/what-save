@@ -46,4 +46,10 @@ dependencies {
 
 //    Player Dependency
     implementation 'com.karumi:dexter:6.2.1'
+
+//  MK VideoPlayer
+    implementation 'com.github.khizar1556.MKVideoPlayer:mkvideoplayer:0.1.5'
+
+//  Media Picker
+//    implementation 'net.alhazmy13.MediaPicker:libary:2.4.4'
 }

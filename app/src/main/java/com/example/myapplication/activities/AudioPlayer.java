@@ -191,7 +191,7 @@ public class AudioPlayer extends AppCompatActivity {
     }
 
     private void init() {
-        Objects.requireNonNull(getSupportActionBar()).setTitle("WhatsSave");
+        Objects.requireNonNull(getSupportActionBar()).setTitle(Constants.TOOLBAR_NAME);
         mSeekBarTime = findViewById(R.id.mSeekBarTime);
         songName = findViewById(R.id.songName);
         play = findViewById(R.id.play);

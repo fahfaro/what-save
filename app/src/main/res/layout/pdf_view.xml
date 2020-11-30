@@ -9,9 +9,8 @@
 
     <ImageView
         android:id="@+id/thumbnail"
-        android:layout_width="110dp"
+        android:layout_width="50dp"
         android:layout_height="65dp"
-        android:layout_gravity="center_horizontal"
         android:src="@drawable/pdf_thumbnail" />
 
     <TextView

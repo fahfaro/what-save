@@ -54,7 +54,7 @@ public class AudioFragment extends Fragment implements ClickInterface {
 
         audioModels = dbHelper.getAudioDataSql();
         AudioFragmentAdapter audioFragmentAdapter = new AudioFragmentAdapter(audioModels, this);
-        recyclerView.setLayoutManager(new GridLayoutManager(view.getContext(), 3));
+        recyclerView.setLayoutManager(new GridLayoutManager(view.getContext(), 4));
         recyclerView.setAdapter(audioFragmentAdapter);
 //        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(view.getContext(), DividerItemDecoration.HORIZONTAL);
 //        recyclerView.addItemDecoration(dividerItemDecoration);

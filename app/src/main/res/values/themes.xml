@@ -13,16 +13,4 @@
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
     </style>
-    <style name="MyTabLayoutTextAppearance" parent="TextAppearance.Design.Tab">
-        <item name="android:textSize">12sp</item>
-    </style>
-    <drawable name="my_gradient">
-        <shape xmlns:android="http://schemas.android.com/apk/res/android">
-            <gradient
-                android:type="linear"
-                android:angle="10"
-                android:startColor="#3a2874"
-                android:endColor="#e3245a" />
-        </shape>
-    </drawable>
 </resources>

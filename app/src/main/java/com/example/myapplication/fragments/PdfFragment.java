@@ -51,7 +51,7 @@ public class PdfFragment extends Fragment implements ClickInterface {
 
         pdfModels = dbHelper.getPdfDataSql();
         PdfFragmentAdapter pdfFragmentAdapter = new PdfFragmentAdapter(pdfModels, this);
-        recyclerView.setLayoutManager(new GridLayoutManager(view.getContext(),3));
+        recyclerView.setLayoutManager(new GridLayoutManager(view.getContext(),5));
         recyclerView.setAdapter(pdfFragmentAdapter);
         pdfFragmentAdapter.updateAdaterInsert(pdfModels);
 //        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(view.getContext(), DividerItemDecoration.HORIZONTAL);

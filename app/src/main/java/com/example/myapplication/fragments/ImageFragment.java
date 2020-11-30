@@ -27,6 +27,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.util.List;
+import java.util.Objects;
 
 import static android.content.Context.MODE_PRIVATE;
 
@@ -34,7 +35,6 @@ import static android.content.Context.MODE_PRIVATE;
 public class ImageFragment extends androidx.fragment.app.Fragment implements ClickInterface {
     private DBHelper dbHelper;
     private List<ImageModel> imageModels;
-    private RecyclerView recyclerView;
     private ImageFragmentAdapter imageFragmentAdapter;
     private SwipeRefreshLayout swipeRefreshLayout;
     public ImageFragment() {
@@ -51,7 +51,7 @@ public class ImageFragment extends androidx.fragment.app.Fragment implements Cli
     @Override
     public void onViewCreated(@NonNull @NotNull View view, @Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        recyclerView = view.findViewById(R.id.img_recycler);
+        RecyclerView recyclerView = view.findViewById(R.id.img_recycler);
         dbHelper = new DBHelper(view.getContext());
         swipeRefreshLayout = view.findViewById(R.id.swipe_refreshlayout_image);
         imageModels = dbHelper.getImageDataSql();
@@ -98,7 +98,7 @@ public class ImageFragment extends androidx.fragment.app.Fragment implements Cli
         String title;
         long idfordelete = imageModels.get(position).getId();
         title = dbHelper.getImageName(idfordelete);
-        File path = getContext().getDir(Constants.DIR_NAME_IMAGE, MODE_PRIVATE);
+        File path = Objects.requireNonNull(getContext()).getDir(Constants.DIR_NAME_IMAGE, MODE_PRIVATE);
         File file = new File(path, title);
         Uri path1 = FileProvider.getUriForFile(getContext(), "com.example.myapplication.fileprovider", file);
         Intent shareIntent = new Intent();

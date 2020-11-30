@@ -16,6 +16,7 @@ import android.widget.Toast;
 import com.example.myapplication.adapters.DetailPagerAdapter;
 import com.example.myapplication.data.DBHelper;
 import com.example.myapplication.R;
+import com.example.myapplication.helper.Constants;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 
@@ -28,17 +29,14 @@ import java.util.ArrayList;
 import java.util.Objects;
 
 public class DetailsContact extends AppCompatActivity {
-    private static final String DIR_NAME_PDF = "pdf";
-    private static final String DIR_NAME_IMAGE = "images";
-    private static final String DIR_NAME_AUDIO = "audio";
-    private static final String DIR_NAME_VIDEO = "video";
+
     private DBHelper dbHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_details_contact);
-        Objects.requireNonNull(getSupportActionBar()).setTitle("WhatsSave");
+        Objects.requireNonNull(getSupportActionBar()).setTitle(Constants.TOOLBAR_NAME);
         dbHelper = new DBHelper(this);
         Intent intent = getIntent();
         if (intent != null) {
@@ -103,7 +101,7 @@ public class DetailsContact extends AppCompatActivity {
         }
         String videoname = videoName + ".mp4";
         if (uri != null) {
-            File path = getDir(DIR_NAME_VIDEO, MODE_PRIVATE);
+            File path = getDir(Constants.DIR_NAME_VIDEO, MODE_PRIVATE);
             File file = new File(path, videoname);
             InputStream is = null;
             BufferedOutputStream bos = null;
@@ -193,7 +191,7 @@ public class DetailsContact extends AppCompatActivity {
         }
         String audioname = audioName + ".mp3";
         if (uri != null) {
-            File path = getDir(DIR_NAME_AUDIO, MODE_PRIVATE);
+            File path = getDir(Constants.DIR_NAME_AUDIO, MODE_PRIVATE);
             File file = new File(path, audioname);
             InputStream is = null;
             BufferedOutputStream bos = null;
@@ -250,7 +248,7 @@ public class DetailsContact extends AppCompatActivity {
         }
         pdfname = pdfName + ".pdf";
         if (pdffile != null) {
-            File path = getDir(DIR_NAME_PDF, MODE_PRIVATE);
+            File path = getDir(Constants.DIR_NAME_PDF, MODE_PRIVATE);
             File file = new File(path, pdfname);
             InputStream is = null;
             BufferedOutputStream bos = null;
@@ -308,7 +306,7 @@ public class DetailsContact extends AppCompatActivity {
         }
         imagename = ImageName + ".jpeg";
         if (uri != null) {
-            File path = getDir(DIR_NAME_IMAGE, MODE_PRIVATE);
+            File path = getDir(Constants.DIR_NAME_IMAGE, MODE_PRIVATE);
             File file = new File(path, imagename);
             InputStream is = null;
             BufferedOutputStream bos = null;

@@ -1,28 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_marginStart="8dp"
-    android:layout_marginTop="16dp"
-    android:layout_marginBottom="8dp">
+    android:id="@+id/cardview_id"
+    android:clickable="true"
+    android:foreground="?android:attr/selectableItemBackground"
+    android:layout_width="80dp"
+    android:layout_height="90dp"
+    xmlns:cardview="http://schemas.android.com/apk/res-auto"
+    android:layout_margin="5dp"
+    cardview:cardCornerRadius="4dp"
+    android:focusable="true">
 
-    <ImageView
-        android:id="@+id/thumbnail"
-        android:layout_width="65dp"
-        android:layout_height="65dp"
-        android:layout_gravity="center_horizontal"
-        android:src="@drawable/audio_thumbnail"
-        />
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/tv_audio_name"
-        android:layout_width="100dp"
-        android:layout_height="match_parent"
-        android:layout_gravity="bottom"
-        android:gravity="center"
-        android:maxLines="4"
-        android:visibility="gone"
-        android:text="@string/_08_10_2002"
-        android:textSize="20sp" />
+        <ImageView
+            android:id="@+id/thumbnail"
+            android:layout_width="match_parent"
+            android:layout_height="70dp"
+            android:src="@drawable/audio_thumbnail"/>
+
+        <TextView
+            android:id="@+id/tv_audio_name"
+            android:textColor="#2d2d2d"
+            android:textSize="13sp"
+            android:gravity="center"
+            android:ellipsize="marquee"
+            android:singleLine="true"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="Book Title"/>
+
+    </LinearLayout>
 
 </androidx.cardview.widget.CardView>

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.myapplication">
+    package="com.example.whatsave">
 
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.INTERNET" />
@@ -13,15 +13,15 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MyApplication">
         <activity
-            android:name=".activities.VideoPlayer"
-            android:parentActivityName=".activities.DetailsContact" />
+            android:name="com.example.whatsave.activities.VideoPlayer"
+            android:parentActivityName="com.example.whatsave.activities.DetailsContact" />
         <activity
-            android:name=".activities.AudioPlayer"
-            android:parentActivityName=".activities.DetailsContact" />
+            android:name="com.example.whatsave.activities.AudioPlayer"
+            android:parentActivityName="com.example.whatsave.activities.DetailsContact" />
         <activity
-            android:name=".activities.ViewItem"
-            android:parentActivityName=".activities.DetailsContact" />
-        <activity android:name=".activities.DetailsContact">
+            android:name="com.example.whatsave.activities.ViewItem"
+            android:parentActivityName="com.example.whatsave.activities.DetailsContact" />
+        <activity android:name="com.example.whatsave.activities.DetailsContact">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -79,7 +79,7 @@
         </activity> <!-- FileProvider - Expose File -->
         <provider
             android:name="androidx.core.content.FileProvider"
-            android:authorities="com.example.myapplication.fileprovider"
+            android:authorities="com.example.whatsave.fileprovider"
             android:exported="false"
             android:grantUriPermissions="true">
             <meta-data

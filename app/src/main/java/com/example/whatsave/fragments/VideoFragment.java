@@ -1,12 +1,14 @@
 package com.example.whatsave.fragments;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -16,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.whatsave.activities.VideoPlayer;
@@ -81,22 +84,43 @@ public class VideoFragment extends Fragment implements ClickInterface {
 
             switch (direction) {
                 case ItemTouchHelper.LEFT:
-//                    deletedVideoId = videoModels.get(position).getId();
-//                    deletedVideoName = videoModels.get(position).getName();
-//                    deletedVideoTItle = videoModels.get(position).getTitle();
-                    Toast.makeText(getContext(), "Left", Toast.LENGTH_SHORT).show();
-//                    dbHelper.deleteSelectedVideo(videoFragmentAdapter.getPostion(viewHolder.getAdapterPosition()));
-                    videoFragmentAdapter.notifyDataSetChanged();
-//                    Snackbar.make(recyclerView,deletedVideoName, Snackbar.LENGTH_LONG).setAction("Undo", new View.OnClickListener() {
-//                        @Override
-//                        public void onClick(View v) {
-//                            videoModels.add(position,dbHelper.insertVideoData(deletedVideoId,deletedVideoName,deletedVideoTItle));
-//                        }
-//                    }).show();
-//                    videoFragmentAdapter.notifyDataSetChanged();
+                    long idfordelete = videoModels.get(viewHolder.getAdapterPosition()).getId();
+                    AlertDialog.Builder builder1 = new AlertDialog.Builder(Objects.requireNonNull(getContext()));
+                    builder1.setTitle("Are you sure to delete?");
+                    builder1.setPositiveButton("OK", (dialog1, which) -> {
+                        dbHelper.deleteSelectedVideo(idfordelete);
+                        videoFragmentAdapter.notifyDataSetChanged();
+                    }).setCancelable(false).setNegativeButton("No", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            videoFragmentAdapter.notifyDataSetChanged();
+                        }
+                    });
+                    AlertDialog dialog1 = builder1.create();
+                    dialog1.show();
                     break;
                 case ItemTouchHelper.RIGHT:
-                    Toast.makeText(getContext(), "Rigth", Toast.LENGTH_SHORT).show();
+                    //                        update the name of Video file on left to Right Swipe
+
+                    final String[] name = {null};
+                    long id = videoModels.get(viewHolder.getAdapterPosition()).getId();
+                    String title = videoModels.get(viewHolder.getAdapterPosition()).getTitle();
+                    AlertDialog.Builder builder = new AlertDialog.Builder(Objects.requireNonNull(getContext()));
+                    builder.setTitle("Name");
+                    final View customLayout = getLayoutInflater().inflate(R.layout.custom_layout, null);
+                    builder.setView(customLayout);
+                    EditText editText1 = customLayout.findViewById(R.id.editText1);
+                    builder.setPositiveButton("OK", (dialog, which) -> {
+                        name[0] = editText1.getText().toString();
+                        if (name[0].compareTo("") == 0) {
+                            Toast.makeText(getContext(),
+                                    "missing", Toast.LENGTH_SHORT).show();
+                        } else {
+                            dbHelper.updateVideo(id, name[0], title);
+                        }
+                    }).setCancelable(false);
+                    AlertDialog dialog = builder.create();
+                    dialog.show();
                     videoFragmentAdapter.notifyDataSetChanged();
                     break;
             }

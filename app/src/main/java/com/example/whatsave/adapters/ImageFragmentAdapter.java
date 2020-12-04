@@ -53,6 +53,7 @@ public class ImageFragmentAdapter extends RecyclerView.Adapter<ImageFragmentAdap
         }
         
         if (name != null) {
+            holder.t_name.setSelected(true);
             holder.t_name.setText(name);
         } else {
             holder.t_name.setText("Empty");

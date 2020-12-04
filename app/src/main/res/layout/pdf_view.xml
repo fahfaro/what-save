@@ -27,6 +27,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="center"
+            android:ellipsize="marquee"
+            android:singleLine="true"
             android:text="Book Title"
             android:textColor="#2d2d2d"
             android:textSize="13sp" />

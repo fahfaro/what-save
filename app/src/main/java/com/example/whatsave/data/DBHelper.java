@@ -87,6 +87,40 @@ public class DBHelper extends SQLiteOpenHelper {
 //        db.close();
 //    }
 
+    public void updatePdf(long id, String name, String title) {
+        db = getReadableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(DBSchema.COLUMN_ID, id);
+        values.put(DBSchema.COLUMN_NAME, name);
+        values.put(DBSchema.COLUMN_TITLE, title);
+        db.update(DBSchema.PDF_TABLE_NAME,values,DBSchema.COLUMN_ID + " = " + id, null);
+        db.close();
+    }public void updateImage(long id, String name, String title) {
+        db = getReadableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(DBSchema.COLUMN_ID, id);
+        values.put(DBSchema.COLUMN_NAME, name);
+        values.put(DBSchema.COLUMN_TITLE, title);
+        db.update(DBSchema.IMAGE_TABLE_NAME,values,DBSchema.COLUMN_ID + " = " + id, null);
+        db.close();
+    }public void updateAudio(long id, String name, String title) {
+        db = getReadableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(DBSchema.COLUMN_ID, id);
+        values.put(DBSchema.COLUMN_NAME, name);
+        values.put(DBSchema.COLUMN_TITLE, title);
+        db.update(DBSchema.AUDIO_TABLE_NAME,values,DBSchema.COLUMN_ID + " = " + id, null);
+        db.close();
+    }public void updateVideo(long id, String name, String title) {
+        db = getReadableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(DBSchema.COLUMN_ID, id);
+        values.put(DBSchema.COLUMN_NAME, name);
+        values.put(DBSchema.COLUMN_TITLE, title);
+        db.update(DBSchema.VIDEO_TABLE_NAME,values,DBSchema.COLUMN_ID + " = " + id, null);
+        db.close();
+    }
+
     public List<PdfModel> getPdfDataSql() {
         List<PdfModel> pdf_list = new ArrayList<>();
         db = getReadableDatabase();

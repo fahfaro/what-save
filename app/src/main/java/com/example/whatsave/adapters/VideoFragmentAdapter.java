@@ -56,7 +56,7 @@ public class VideoFragmentAdapter extends RecyclerView.Adapter<VideoFragmentAdap
         File file = new File(path, title);
         Glide.with(context).load(file).thumbnail(0.1f).into(holder.thumbnail);
         if (name[0] != null) {
-            holder.t_name.isSelected();
+            holder.t_name.setSelected(true);
             holder.t_name.setText(name[0]);
         } else {
             holder.t_name.setText("Empty");

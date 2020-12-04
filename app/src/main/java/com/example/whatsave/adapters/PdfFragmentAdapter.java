@@ -42,6 +42,7 @@ public class PdfFragmentAdapter extends RecyclerView.Adapter<PdfFragmentAdapter.
     public void onBindViewHolder(@NonNull @NotNull PdfFragmentAdapter.MyViewHolder holder, int position) {
         String name = pdf_models.get(position).getName();
         if (name != null) {
+            holder.t_name.setSelected(true);
             holder.t_name.setText(name);
         } else {
             holder.t_name.setText("Empty");

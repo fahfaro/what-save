@@ -40,7 +40,7 @@ public class AudioFragmentAdapter extends RecyclerView.Adapter<AudioFragmentAdap
     public void onBindViewHolder(@NonNull @NotNull AudioFragmentAdapter.MyViewHolder holder, int position) {
         String name = audioModels.get(position).getName();
         if (name != null) {
-            holder.t_name.isSelected();
+            holder.t_name.setSelected(true);
             holder.t_name.setText(name);
         } else {
             holder.t_name.setText("Empty");

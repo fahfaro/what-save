@@ -15,13 +15,13 @@ import com.example.whatsave.helper.Constants;
 import java.io.File;
 import java.util.Objects;
 
-public class ViewItem extends AppCompatActivity {
+public class ViewImage extends AppCompatActivity {
     private ImageView mImageView1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_view_item);
+        setContentView(R.layout.activity_view_image);
         String titleImage;
         init();
         Intent intent = getIntent();
@@ -33,7 +33,6 @@ public class ViewItem extends AppCompatActivity {
 
     private void showImage(String title) {
         Objects.requireNonNull(getSupportActionBar()).setTitle(Constants.TOOLBAR_NAME);
-        mImageView1.setVisibility(View.VISIBLE);
         File path = getDir(Constants.DIR_NAME_IMAGE, MODE_PRIVATE);
         File file = new File(path, title);
         if (file.exists()) {

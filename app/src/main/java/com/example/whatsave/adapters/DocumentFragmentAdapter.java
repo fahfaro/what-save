@@ -55,7 +55,7 @@
 //            @Override
 //            public void onClick(View v) {
 ////                String title = dbHelper.getDocumnetName(position);
-//                Intent intent = new Intent(context, ViewItem.class);
+//                Intent intent = new Intent(context, ViewImage.class);
 ////                intent.putExtra("document", title);
 //                context.startActivity(intent);
 //            }
